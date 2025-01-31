@@ -1,1 +1,1 @@
-# rs-school-react-2025
+# React + TypeScript + Vite
