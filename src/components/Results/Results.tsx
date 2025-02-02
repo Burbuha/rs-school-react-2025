@@ -25,6 +25,10 @@ class Results extends Component<Props> {
       );
     }
 
+    if (!peoples.length) {
+      return <div className="no-data">No data...</div>;
+    }
+
     return (
       <div className="results-list">
         <CardList items={peoples} />

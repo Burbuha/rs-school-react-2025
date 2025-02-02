@@ -112,3 +112,7 @@
 .pagination span {
   margin: 0 10px;
 }
+
+.no-data {
+  margin: 100px;
+}

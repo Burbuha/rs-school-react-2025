@@ -5,6 +5,7 @@ import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary.tsx';
 import Search from './components/Search/Search.tsx';
 import Results from './components/Results/Results.tsx';
 import Pagination from './components/Pagination/Pagination.tsx';
+import ErrorButton from './components/ErrorButton/ErrorButton.tsx';
 
 export interface People {
   name: string;
@@ -40,7 +41,6 @@ class App extends Component<object, State> {
       totalPages: 1,
     };
 
-    this.handleErrorClick = this.handleErrorClick.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
   }
 
@@ -56,7 +56,17 @@ class App extends Component<object, State> {
       const response = await fetch(url);
 
       if (!response.ok) {
-        throw new Error('Failed to fetch data');
+        if (response.status >= 400 && response.status < 500) {
+          throw new Error(
+            `Client Error: ${response.status} ${response.statusText}`
+          );
+        } else if (response.status >= 500 && response.status < 600) {
+          throw new Error(
+            `Server Error: ${response.status} ${response.statusText}`
+          );
+        } else {
+          throw new Error('Failed to fetch data');
+        }
       }
 
       const data = await response.json();
@@ -101,10 +111,6 @@ class App extends Component<object, State> {
     await this.fetchData(this.state.searchTerm, this.state.currentPage);
   };
 
-  handleErrorClick() {
-    this.setState({ error: 'Test Error Boundary' });
-  }
-
   render() {
     const { peoples, loading, error, currentPage, totalPages } = this.state;
 
@@ -127,7 +133,7 @@ class App extends Component<object, State> {
               totalPages={totalPages}
               onPageChange={this.handlePageChange}
             />
-            <button onClick={this.handleErrorClick}>Error Button</button>
+            <ErrorButton />
           </div>
         </div>
       </ErrorBoundary>
