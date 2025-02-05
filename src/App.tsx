@@ -5,6 +5,7 @@ import { Search } from './components/Search/Search.tsx';
 import { ErrorButton } from './components/ErrorButton/ErrorButton.tsx';
 import { Pagination } from './components/Pagination/Pagination.tsx';
 import { Results } from './components/Results/Results.tsx';
+import { useLocalStorage } from './hooks/useLocalStorage.ts';
 
 export interface People {
   name: string;
@@ -20,9 +21,7 @@ export interface People {
 const API_URL = 'https://swapi.dev/api/people';
 
 export const App = () => {
-  const [searchTerm, setSearchTerm] = useState(
-    localStorage.getItem('searchTerm') || ''
-  );
+  const [searchTerm, setSearchTerm] = useLocalStorage('searchTerm', '');
   const [peoples, setPeoples] = useState<People[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -85,7 +84,6 @@ export const App = () => {
   const handleSearch = async (term: string) => {
     setSearchTerm(term.trim());
     setCurrentPage(1);
-    localStorage.setItem('searchTerm', term.trim());
     await fetchData(term, 1);
   };
 

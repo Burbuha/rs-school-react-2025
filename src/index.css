@@ -14,7 +14,7 @@
 
 body {
   margin: 0;
-  background-image: url("assets/star-wars.jpg");
+  background-image: url('assets/star-wars.jpg');
   background-size: cover;
   background-attachment: fixed;
 }
