@@ -1,11 +1,10 @@
-import { Component } from 'react';
+import { useEffect, useState } from 'react';
 
 import './App.css';
-import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary.tsx';
-import Search from './components/Search/Search.tsx';
-import Results from './components/Results/Results.tsx';
-import Pagination from './components/Pagination/Pagination.tsx';
-import ErrorButton from './components/ErrorButton/ErrorButton.tsx';
+import { Search } from './components/Search/Search.tsx';
+import { ErrorButton } from './components/ErrorButton/ErrorButton.tsx';
+import { Pagination } from './components/Pagination/Pagination.tsx';
+import { Results } from './components/Results/Results.tsx';
 
 export interface People {
   name: string;
@@ -18,34 +17,21 @@ export interface People {
   skin_color: string;
 }
 
-interface State {
-  searchTerm: string;
-  peoples: People[];
-  loading: boolean;
-  error: string | null;
-  currentPage: number;
-  totalPages: number;
-}
-
 const API_URL = 'https://swapi.dev/api/people';
 
-class App extends Component<object, State> {
-  constructor(props: object) {
-    super(props);
-    this.state = {
-      searchTerm: localStorage.getItem('searchTerm') || '',
-      peoples: [],
-      loading: false,
-      error: null,
-      currentPage: 1,
-      totalPages: 1,
-    };
+export const App = () => {
+  const [searchTerm, setSearchTerm] = useState(
+    localStorage.getItem('searchTerm') || ''
+  );
+  const [peoples, setPeoples] = useState<People[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
-    this.handlePageChange = this.handlePageChange.bind(this);
-  }
-
-  fetchData = async (term: string, page: number) => {
-    this.setState({ loading: true, error: null });
+  const fetchData = async (term: string, page: number) => {
+    setLoading(true);
+    setError(null);
 
     const query = term.trim();
     const url = query
@@ -82,63 +68,53 @@ class App extends Component<object, State> {
         skin_color: person.skin_color,
       }));
 
-      this.setState({
-        peoples,
-        loading: false,
-        totalPages: Math.ceil(data.count / 10),
-      });
+      setPeoples(peoples);
+      setLoading(false);
+      setTotalPages(Math.ceil(data.count / 10));
     } catch (error: unknown) {
       if (error instanceof Error) {
-        this.setState({ error: error.message, loading: false });
+        setError(error.message);
+        setLoading(false);
       } else {
-        this.setState({ error: 'An unknown error occurred', loading: false });
+        setError('An unknown error occurred');
+        setLoading(false);
       }
     }
   };
 
-  handleSearch = async (term: string) => {
-    this.setState({ searchTerm: term.trim(), currentPage: 1 });
+  const handleSearch = async (term: string) => {
+    setSearchTerm(term.trim());
+    setCurrentPage(1);
     localStorage.setItem('searchTerm', term.trim());
-    await this.fetchData(term, 1);
+    await fetchData(term, 1);
   };
 
-  handlePageChange = async (page: number) => {
-    this.setState({ currentPage: page });
-    await this.fetchData(this.state.searchTerm, page);
+  const handlePageChange = async (page: number) => {
+    setCurrentPage(page);
+    await fetchData(searchTerm, page);
   };
 
-  componentDidMount = async () => {
-    await this.fetchData(this.state.searchTerm, this.state.currentPage);
-  };
+  useEffect(() => {
+    fetchData(searchTerm, currentPage);
+  }, [searchTerm, currentPage]);
 
-  render() {
-    const { peoples, loading, error, currentPage, totalPages } = this.state;
-
-    return (
-      <ErrorBoundary>
-        <div className="main">
-          <h1>Characters within the Star Wars universe</h1>
-          <div className="top-controls">
-            <Search
-              onSearch={this.handleSearch}
-              initialSearchTerm={this.state.searchTerm}
-            />
-          </div>
-          <div className="results-section">
-            <Results peoples={peoples} loading={loading} error={error} />
-          </div>
-          <div className="bottom-controls">
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={this.handlePageChange}
-            />
-            <ErrorButton />
-          </div>
-        </div>
-      </ErrorBoundary>
-    );
-  }
-}
-
-export default App;
+  return (
+    <div className="main">
+      <h1>Characters within the Star Wars universe</h1>
+      <div className="top-controls">
+        <Search onSearch={handleSearch} initialSearchTerm={searchTerm} />
+      </div>
+      <div className="results-section">
+        <Results peoples={peoples} loading={loading} error={error} />
+      </div>
+      <div className="bottom-controls">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+        <ErrorButton />
+      </div>
+    </div>
+  );
+};
