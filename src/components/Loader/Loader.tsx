@@ -1,5 +1,7 @@
+import styles from './Loader.module.css';
+
 export const Loader = () => (
-  <div className="loader">
-    <div className="loader-spinner"></div>
+  <div className={styles.loader}>
+    <div className={styles.spinner}></div>
   </div>
 );

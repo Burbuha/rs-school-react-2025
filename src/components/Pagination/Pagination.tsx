@@ -1,3 +1,5 @@
+import styles from './Pagination.module.css';
+
 interface Props {
   currentPage: number;
   totalPages: number;
@@ -10,7 +12,7 @@ export const Pagination = ({
   onPageChange,
 }: Props) => {
   return (
-    <div className="pagination">
+    <div className={styles.pagination}>
       <button
         disabled={currentPage === 1}
         onClick={() => onPageChange(currentPage - 1)}

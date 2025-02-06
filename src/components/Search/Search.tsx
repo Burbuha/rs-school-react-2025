@@ -1,5 +1,7 @@
 import { ChangeEvent, useState } from 'react';
 
+import styles from './Search.module.css';
+
 interface Props {
   onSearch: (term: string) => void;
   initialSearchTerm: string;
@@ -17,9 +19,9 @@ export const Search = ({ onSearch, initialSearchTerm }: Props) => {
   };
 
   return (
-    <div className="search-container">
+    <div className={styles.container}>
       <input
-        className="search-input"
+        className={styles.search}
         type="text"
         value={searchTerm}
         onChange={handleInputChange}

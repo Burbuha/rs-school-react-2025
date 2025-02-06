@@ -1,5 +1,7 @@
 import React, { Component, ReactNode } from 'react';
 
+import styles from './ErrorBoundary.module.css';
+
 interface State {
   hasError: boolean;
   errorMessage: string;
@@ -41,7 +43,7 @@ class ErrorBoundary extends Component<{ children: ReactNode }, State> {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="error-boundary">
+        <div className={styles.container}>
           <h1>Something went wrong!</h1>
           <p>{this.state.errorMessage}</p>
           {this.state.errorInfo && (

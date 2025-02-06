@@ -1,33 +1,35 @@
 import { CardList } from '../CardList/CardList.tsx';
-import { People } from '../../App.tsx';
 import { Loader } from '../Loader/Loader.tsx';
+import { Person } from '../../interfaces/person.interface.ts';
+import styles from './Results.module.css';
 
 interface Props {
-  peoples: People[];
+  peoples: Person[];
   loading: boolean;
   error: string | null;
+  onPersonClick: (person: Person) => void;
 }
 
-export const Results = ({ peoples, loading, error }: Props) => {
+export const Results = ({ peoples, loading, error, onPersonClick }: Props) => {
   if (loading) {
     return <Loader />;
   }
 
   if (error) {
     return (
-      <div className="error">
+      <div>
         <p>Error: {error}</p>
       </div>
     );
   }
 
   if (!peoples.length) {
-    return <div className="no-data">No data...</div>;
+    return <div className={styles.noData}>No data...</div>;
   }
 
   return (
-    <div className="results-list">
-      <CardList items={peoples} />
+    <div className={styles.resultsList}>
+      <CardList items={peoples} onPersonClick={onPersonClick} />
     </div>
   );
 };

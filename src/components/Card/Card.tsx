@@ -1,13 +1,14 @@
+import styles from './Card.module.css';
+
 interface Props {
   name: string;
-  description: string;
+  onClick: VoidFunction;
 }
 
-export const Card = ({ name, description }: Props) => {
+export const Card = ({ name, onClick }: Props) => {
   return (
-    <div className="card">
+    <div onClick={onClick} className={styles.person}>
       <h3>{name}</h3>
-      <p>{description}</p>
     </div>
   );
 };

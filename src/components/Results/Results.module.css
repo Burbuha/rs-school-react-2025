@@ -1,0 +1,8 @@
+.resultList {
+  background-color: #000000;
+  max-width: 400px;
+}
+
+.noData {
+  margin: 100px;
+}

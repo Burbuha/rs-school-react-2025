@@ -1,18 +1,19 @@
 import { Card } from '../Card/Card.tsx';
-import { People } from '../../App.tsx';
+import { Person } from '../../interfaces/person.interface.ts';
 
 interface Props {
-  items: People[];
+  items: Person[];
+  onPersonClick: (person: Person) => void;
 }
 
-export const CardList = ({ items }: Props) => {
+export const CardList = ({ items, onPersonClick }: Props) => {
   return (
-    <div className="card-list">
+    <div>
       {items.map((item) => (
         <Card
           key={item.name}
           name={item.name}
-          description={`Birth year: ${item.birth_year} Gender: ${item.gender}, Height: ${item.height}cm`}
+          onClick={() => onPersonClick(item)}
         />
       ))}
     </div>

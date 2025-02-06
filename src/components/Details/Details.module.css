@@ -1,0 +1,19 @@
+.container {
+  max-width: 400px;
+  flex: 1;
+  padding: 20px;
+  border-left: 1px solid #cccccc;
+  background-color: #ffffff;
+  color: #000;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #cccccc;
+}
+
+.closeButton {
+  min-width: 20px;
+}
