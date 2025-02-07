@@ -9,9 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "format:fix": "prettier --write .",
-    "prepare": "husky",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "prepare": "husky"
   },
   "dependencies": {
     "gh-pages": "^6.3.0",

@@ -1,7 +1,7 @@
 .container {
   max-width: 400px;
   flex: 1;
-  padding: 20px;
+  padding: 0 20px;
   border-left: 1px solid #cccccc;
   background-color: #ffffff;
   color: #000;

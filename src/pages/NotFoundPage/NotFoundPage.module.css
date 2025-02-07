@@ -6,6 +6,7 @@
 }
 
 .container button {
+  margin-top: 20px;
   font-size: 34px;
-  height: 120px;
+  height: 90px;
 }

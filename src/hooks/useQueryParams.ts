@@ -1,45 +1,34 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useLocalStorage } from './useLocalStorage.ts';
 
 export const useQueryParams = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useLocalStorage('searchTerm', '');
   const [currentPage, setCurrentPage] = useState(1);
-  const [details, setDetails] = useState<string | null>(null);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const search = params.get('search') || '';
+    const search = params.get('query') || '';
     const page = parseInt(params.get('page') || '1', 10);
-    const details = params.get('details');
 
     setSearchTerm(search);
     setCurrentPage(page);
-    setDetails(details);
-  }, [location.search]);
+  }, [location.search, setSearchTerm]);
 
-  const updateQueryParams = (
-    search: string,
-    page: number,
-    details?: string
-  ) => {
+  const updateQueryParams = (search: string, page: number, name?: string) => {
     const params = new URLSearchParams();
 
-    if (search) {
-      params.set('search', search);
-    }
+    if (search) params.set('query', search);
+    if (page) params.set('page', page.toString());
 
-    if (page) {
-      params.set('page', page.toString());
+    if (name) {
+      navigate(`/${name}?${params.toString()}`);
+    } else {
+      navigate(`/?${params.toString()}`);
     }
-
-    if (details) {
-      params.set('details', details);
-    }
-
-    navigate(`/?${params.toString()}`);
   };
 
-  return { searchTerm, currentPage, details, updateQueryParams };
+  return { searchTerm, currentPage, updateQueryParams };
 };

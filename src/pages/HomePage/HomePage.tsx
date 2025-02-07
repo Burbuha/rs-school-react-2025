@@ -1,13 +1,13 @@
-import { useState } from 'react';
+import { Outlet } from 'react-router-dom';
 import { useFetchData } from '../../hooks/useFetchData';
 import { useQueryParams } from '../../hooks/useQueryParams';
 import { Search } from '../../components/Search/Search';
 import { Results } from '../../components/Results/Results';
 import { Pagination } from '../../components/Pagination/Pagination';
 import { ErrorButton } from '../../components/ErrorButton/ErrorButton';
-import { Details } from '../../components/Details/Details';
 import styles from './HomePage.module.css';
 import { Person } from '../../interfaces/person.interface.ts';
+import { useEffect } from 'react';
 
 export const HomePage = () => {
   const { searchTerm, currentPage, updateQueryParams } = useQueryParams();
@@ -15,7 +15,6 @@ export const HomePage = () => {
     searchTerm,
     currentPage
   );
-  const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
 
   const handleSearch = (term: string) => {
     updateQueryParams(term, 1);
@@ -26,14 +25,12 @@ export const HomePage = () => {
   };
 
   const handlePersonClick = (person: Person) => {
-    setSelectedPerson(person);
     updateQueryParams(searchTerm, currentPage, person.name);
   };
 
-  const handleCloseDetails = () => {
-    setSelectedPerson(null);
+  useEffect(() => {
     updateQueryParams(searchTerm, currentPage);
-  };
+  }, []);
 
   return (
     <div className={styles.main}>
@@ -48,12 +45,7 @@ export const HomePage = () => {
           error={error}
           onPersonClick={handlePersonClick}
         />
-        {selectedPerson && (
-          <Details
-            person={selectedPerson}
-            handleCloseDetails={handleCloseDetails}
-          />
-        )}
+        <Outlet />
       </div>
       <div className={styles.footer}>
         <Pagination
