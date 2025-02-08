@@ -23,10 +23,6 @@ export const Results = ({ peoples, loading, error, onPersonClick }: Props) => {
     );
   }
 
-  if (!peoples.length) {
-    return <div className={styles.noData}>No data...</div>;
-  }
-
   return (
     <div className={styles.resultsList}>
       <CardList items={peoples} onPersonClick={onPersonClick} />

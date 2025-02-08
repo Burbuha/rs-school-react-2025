@@ -27,7 +27,9 @@ export const Search = ({ onSearch, initialSearchTerm }: Props) => {
         onChange={handleInputChange}
         placeholder="Search..."
       />
-      <button onClick={handleSearchClick}>Search</button>
+      <button data-testid="search" onClick={handleSearchClick}>
+        Search
+      </button>
     </div>
   );
 };

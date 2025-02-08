@@ -12,7 +12,7 @@ export const Pagination = ({
   onPageChange,
 }: Props) => {
   return (
-    <div className={styles.pagination}>
+    <div className={styles.pagination} data-testid="pagination">
       <button
         disabled={currentPage === 1}
         onClick={() => onPageChange(currentPage - 1)}

@@ -1,5 +1,6 @@
 import { Card } from '../Card/Card.tsx';
 import { Person } from '../../interfaces/person.interface.ts';
+import styles from './CardList.module.css';
 
 interface Props {
   items: Person[];
@@ -7,6 +8,10 @@ interface Props {
 }
 
 export const CardList = ({ items, onPersonClick }: Props) => {
+  if (!items.length) {
+    return <div className={styles.noData}>No data...</div>;
+  }
+
   return (
     <div>
       {items.map((item) => (

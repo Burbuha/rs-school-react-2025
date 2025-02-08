@@ -29,6 +29,7 @@ export const DetailsPage = () => {
       <div className={styles.header}>
         <h2>{details.name}</h2>
         <button
+          data-testid="close-button"
           className={styles.closeButton}
           onClick={() => navigate(`/?query=${search}&page=${page}`)}
         >
