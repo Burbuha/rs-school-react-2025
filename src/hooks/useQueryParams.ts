@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useLocalStorage } from './useLocalStorage.ts';
 
 export const useQueryParams = () => {
@@ -17,18 +17,27 @@ export const useQueryParams = () => {
     setCurrentPage(page);
   }, [location.search, setSearchTerm]);
 
-  const updateQueryParams = (search: string, page: number, name?: string) => {
-    const params = new URLSearchParams();
+  const updateQueryParams = useCallback(
+    (search: string, page: number, name?: string) => {
+      const params = new URLSearchParams();
 
-    if (search) params.set('query', search);
-    if (page) params.set('page', page.toString());
+      if (search) params.set('query', search);
+      if (page) params.set('page', page.toString());
 
-    if (name) {
-      navigate(`/${name}?${params.toString()}`);
-    } else {
-      navigate(`/?${params.toString()}`);
+      if (name) {
+        navigate(`/${name}?${params.toString()}`);
+      } else {
+        navigate(`/?${params.toString()}`);
+      }
+    },
+    [navigate]
+  );
+
+  useEffect(() => {
+    if (window.location.pathname === '/') {
+      updateQueryParams(searchTerm, currentPage);
     }
-  };
+  }, [currentPage, searchTerm, updateQueryParams]);
 
   return { searchTerm, currentPage, updateQueryParams };
 };

@@ -7,7 +7,6 @@ import { Pagination } from '../../components/Pagination/Pagination';
 import { ErrorButton } from '../../components/ErrorButton/ErrorButton';
 import styles from './HomePage.module.css';
 import { Person } from '../../interfaces/person.interface.ts';
-import { useEffect } from 'react';
 
 export const HomePage = () => {
   const { searchTerm, currentPage, updateQueryParams } = useQueryParams();
@@ -27,10 +26,6 @@ export const HomePage = () => {
   const handlePersonClick = (person: Person) => {
     updateQueryParams(searchTerm, currentPage, person.name);
   };
-
-  useEffect(() => {
-    updateQueryParams(searchTerm, currentPage);
-  }, []);
 
   return (
     <div className={styles.main}>
