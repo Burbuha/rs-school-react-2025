@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { DetailsPage } from './DetailsPage';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useFetchDetails } from '../../hooks/useFetchDetails';
@@ -46,19 +46,6 @@ describe('DetailsPage', () => {
     expect(
       screen.getByText(/Error: Something went wrong/i)
     ).toBeInTheDocument();
-  });
-
-  it('renders "No details available" when details are null', () => {
-    mockUseParams.mockReturnValue({ name: 'Luke' });
-    mockUseFetchDetails.mockReturnValue({
-      details: null,
-      loading: false,
-      error: null,
-    });
-
-    render(<DetailsPage />);
-
-    expect(screen.getByText(/No details available/i)).toBeInTheDocument();
   });
 
   it('renders character details correctly', () => {
@@ -116,5 +103,23 @@ describe('DetailsPage', () => {
     fireEvent.click(closeButton);
 
     expect(mockNavigate).toHaveBeenCalledWith('/?query=&page=1');
+  });
+
+  it('redirects to /not-found when details are not found', async () => {
+    const mockNavigate = vi.fn();
+    mockUseNavigate.mockReturnValue(mockNavigate);
+
+    mockUseParams.mockReturnValue({ name: 'Luke' });
+    mockUseFetchDetails.mockReturnValue({
+      details: null,
+      loading: false,
+      error: null,
+    });
+
+    render(<DetailsPage />);
+
+    await waitFor(() =>
+      expect(mockNavigate).toHaveBeenCalledWith('/not-found', { replace: true })
+    );
   });
 });
