@@ -21,7 +21,9 @@ export const DetailsPage = () => {
   }
 
   if (!details) {
-    return <div>No details available</div>;
+    navigate('/not-found', { replace: true });
+
+    return;
   }
 
   return (

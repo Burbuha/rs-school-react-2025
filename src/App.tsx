@@ -21,6 +21,7 @@ export const App = () => {
           <Route path=":name" element={<DetailsPage />} />
         </Route>
         <Route path="*" element={<NotFoundPage />} />
+        <Route path="/not-found" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   );
