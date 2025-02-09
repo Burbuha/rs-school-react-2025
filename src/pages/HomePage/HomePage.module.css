@@ -1,0 +1,38 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.results {
+  flex: 1;
+  display: flex;
+  gap: 20px;
+  margin: 20px;
+  width: 100%;
+  justify-content: center;
+  overflow-y: auto;
+}
+
+.results::-webkit-scrollbar {
+  width: 10px;
+  background-color: #000000;
+}
+
+.results::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #ffffff;
+}
+
+.results::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  background-color: #000000;
+}
+
+.footer {
+  margin: 20px;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}

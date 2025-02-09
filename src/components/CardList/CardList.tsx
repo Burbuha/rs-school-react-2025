@@ -1,27 +1,26 @@
-import { Component } from 'react';
-
-import Card from '../Card/Card.tsx';
-import { People } from '../../App.tsx';
+import { Card } from '../Card/Card.tsx';
+import { Person } from '../../interfaces/person.interface.ts';
+import styles from './CardList.module.css';
 
 interface Props {
-  items: People[];
+  items: Person[];
+  onPersonClick: (person: Person) => void;
 }
 
-class CardList extends Component<Props> {
-  render() {
-    const { items } = this.props;
-    return (
-      <div className="card-list">
-        {items.map((item) => (
-          <Card
-            key={item.name}
-            name={item.name}
-            description={`Birth year: ${item.birth_year} Gender: ${item.gender}, Height: ${item.height}cm`}
-          />
-        ))}
-      </div>
-    );
+export const CardList = ({ items, onPersonClick }: Props) => {
+  if (!items.length) {
+    return <div className={styles.noData}>No data...</div>;
   }
-}
 
-export default CardList;
+  return (
+    <div>
+      {items.map((item) => (
+        <Card
+          key={item.name}
+          name={item.name}
+          onClick={() => onPersonClick(item)}
+        />
+      ))}
+    </div>
+  );
+};

@@ -1,40 +1,31 @@
-import { Component } from 'react';
-import CardList from '../CardList/CardList.tsx';
-import { People } from '../../App.tsx';
-import Loader from '../Loader/Loader.tsx';
+import { CardList } from '../CardList/CardList.tsx';
+import { Loader } from '../Loader/Loader.tsx';
+import { Person } from '../../interfaces/person.interface.ts';
+import styles from './Results.module.css';
 
 interface Props {
-  peoples: People[];
+  peoples: Person[];
   loading: boolean;
   error: string | null;
+  onPersonClick: (person: Person) => void;
 }
 
-class Results extends Component<Props> {
-  render() {
-    const { peoples, loading, error } = this.props;
+export const Results = ({ peoples, loading, error, onPersonClick }: Props) => {
+  if (loading) {
+    return <Loader />;
+  }
 
-    if (loading) {
-      return <Loader />;
-    }
-
-    if (error) {
-      return (
-        <div className="error">
-          <p>Error: {error}</p>
-        </div>
-      );
-    }
-
-    if (!peoples.length) {
-      return <div className="no-data">No data...</div>;
-    }
-
+  if (error) {
     return (
-      <div className="results-list">
-        <CardList items={peoples} />
+      <div>
+        <p>Error: {error}</p>
       </div>
     );
   }
-}
 
-export default Results;
+  return (
+    <div className={styles.resultsList}>
+      <CardList items={peoples} onPersonClick={onPersonClick} />
+    </div>
+  );
+};

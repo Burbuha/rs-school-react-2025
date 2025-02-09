@@ -1,0 +1,12 @@
+.container {
+  height: 100vh;
+  background-color: #ffffff;
+  background-image: url('../../assets/404.png');
+  background-size: cover;
+}
+
+.container button {
+  margin-top: 20px;
+  font-size: 34px;
+  height: 90px;
+}

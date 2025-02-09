@@ -1,20 +1,14 @@
-import { Component } from 'react';
+import styles from './Card.module.css';
 
 interface Props {
   name: string;
-  description: string;
+  onClick: VoidFunction;
 }
 
-class Card extends Component<Props> {
-  render() {
-    const { name, description } = this.props;
-    return (
-      <div className="card">
-        <h3>{name}</h3>
-        <p>{description}</p>
-      </div>
-    );
-  }
-}
-
-export default Card;
+export const Card = ({ name, onClick }: Props) => {
+  return (
+    <div onClick={onClick} className={styles.person}>
+      <h3>{name}</h3>
+    </div>
+  );
+};
