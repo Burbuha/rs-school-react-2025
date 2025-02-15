@@ -3,6 +3,8 @@ import { Results } from './Results';
 import { Card } from '../Card/Card';
 import { Person } from '../../interfaces/person.interface.ts';
 import { vi } from 'vitest';
+import { store } from '../../store/store.ts';
+import { Provider } from 'react-redux';
 
 vi.mock('../CardList/CardList.tsx', () => ({
   CardList: ({
@@ -16,8 +18,8 @@ vi.mock('../CardList/CardList.tsx', () => ({
       {items.map((person) => (
         <Card
           key={person.name}
-          name={person.name}
-          onClick={() => onPersonClick(person)}
+          person={person}
+          onPersonClick={() => onPersonClick(person)}
         />
       ))}
     </div>
@@ -55,12 +57,14 @@ describe('Results Component', () => {
 
   it('renders the relevant card data', () => {
     render(
-      <Results
-        peoples={mockPeoples}
-        loading={false}
-        error={null}
-        onPersonClick={mockOnPersonClick}
-      />
+      <Provider store={store}>
+        <Results
+          peoples={mockPeoples}
+          loading={false}
+          error={null}
+          onPersonClick={mockOnPersonClick}
+        />
+      </Provider>
     );
 
     expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
@@ -96,12 +100,14 @@ describe('Results Component', () => {
 
   it('calls onPersonClick when a card is clicked', async () => {
     render(
-      <Results
-        peoples={mockPeoples}
-        loading={false}
-        error={null}
-        onPersonClick={mockOnPersonClick}
-      />
+      <Provider store={store}>
+        <Results
+          peoples={mockPeoples}
+          loading={false}
+          error={null}
+          onPersonClick={mockOnPersonClick}
+        />
+      </Provider>
     );
 
     fireEvent.click(screen.getByText('Luke Skywalker'));
@@ -119,12 +125,14 @@ describe('Results Component', () => {
     const mockApiCall = vi.fn();
 
     render(
-      <Results
-        peoples={mockPeoples}
-        loading={false}
-        error={null}
-        onPersonClick={(person) => mockApiCall(person)}
-      />
+      <Provider store={store}>
+        <Results
+          peoples={mockPeoples}
+          loading={false}
+          error={null}
+          onPersonClick={(person) => mockApiCall(person)}
+        />
+      </Provider>
     );
 
     fireEvent.click(screen.getByText('Luke Skywalker'));
