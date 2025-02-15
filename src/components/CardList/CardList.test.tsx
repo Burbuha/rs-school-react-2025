@@ -4,9 +4,15 @@ import { Person } from '../../interfaces/person.interface';
 import { vi } from 'vitest';
 
 vi.mock('../Card/Card.tsx', () => ({
-  Card: ({ name, onClick }: { name: string; onClick: VoidFunction }) => (
-    <div data-testid="mock-card" onClick={onClick}>
-      <h3>{name}</h3>
+  Card: ({
+    person,
+    onPersonClick,
+  }: {
+    person: Person;
+    onPersonClick: (person: Person) => void;
+  }) => (
+    <div data-testid="mock-card" onClick={() => onPersonClick(person)}>
+      <h3>{person.name}</h3>
     </div>
   ),
 }));

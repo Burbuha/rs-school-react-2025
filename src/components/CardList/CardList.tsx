@@ -15,11 +15,7 @@ export const CardList = ({ items, onPersonClick }: Props) => {
   return (
     <div>
       {items.map((item) => (
-        <Card
-          key={item.name}
-          name={item.name}
-          onClick={() => onPersonClick(item)}
-        />
+        <Card key={item.name} person={item} onPersonClick={onPersonClick} />
       ))}
     </div>
   );

@@ -1,11 +1,10 @@
+@import 'src/styles/themes.css';
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
   font-size: 18px;
-
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -13,11 +12,17 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-body {
-  margin: 0;
-  background-image: url('assets/star-wars.jpg');
+.main {
+  background-image: var(--background-image);
   background-size: cover;
   background-attachment: fixed;
+
+  color: var(--text-color);
+  background-color: var(--background-color);
+}
+
+body {
+  margin: 0;
 }
 
 h1 {
@@ -34,7 +39,8 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #ffffff;
+  color: var(--text-color);
+  background-color: var(--button-background);
   cursor: pointer;
   transition: border-color 0.25s;
 }

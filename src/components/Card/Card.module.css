@@ -1,3 +1,9 @@
 .person {
   cursor: pointer;
 }
+
+.card {
+  display: flex;
+  gap: 20px;
+  justify-content: flex-start;
+}
