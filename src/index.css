@@ -1,4 +1,4 @@
-@import 'src/styles/themes.css';
+@import './styles/themes.css';
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
