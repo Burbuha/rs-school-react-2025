@@ -11,6 +11,7 @@ import { unselectAll } from '../../store/slices/selectedItemsSlice.ts';
 import { useTheme } from '../../context/ThemeContext.tsx';
 import styles from './HomePage.module.css';
 import { ToggleButton } from '../../components/ToggleButton/ToggleButton.tsx';
+import { DownloadButton } from '../../components/DownloadButton/DownloadButton.tsx';
 
 export const HomePage = () => {
   const { searchTerm, currentPage, updateQueryParams } = useQueryParams();
@@ -38,24 +39,6 @@ export const HomePage = () => {
 
   const handleUnselectAll = () => {
     dispatch(unselectAll());
-  };
-
-  const handleDownload = () => {
-    const csvContent = selectedItems
-      .map(
-        (item) =>
-          `${item.name},${item.birth_year},${item.gender},${item.height},${item.mass}`
-      )
-      .join('\n');
-    const blob = new Blob([csvContent], { type: 'text/csv' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.setAttribute('hidden', '');
-    a.setAttribute('href', url);
-    a.setAttribute('download', `${selectedItems.length}_items.csv`);
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
   };
 
   return (
@@ -91,7 +74,7 @@ export const HomePage = () => {
             <div className={styles.flyout}>
               <span>{selectedItems.length} items are selected</span>
               <button onClick={handleUnselectAll}>Unselect all</button>
-              <button onClick={handleDownload}>Download</button>
+              <DownloadButton />
             </div>
           )}
         </div>
