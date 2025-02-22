@@ -1,18 +1,23 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { vi } from 'vitest';
+import { Mock, vi } from 'vitest';
 import { Search } from './Search';
+import { useQueryParams } from '../../hooks/useQueryParams.ts';
+
+vi.mock('../../hooks/useQueryParams.ts');
 
 describe('Search component', () => {
+  (useQueryParams as Mock).mockReturnValue({
+    searchTerm: 'Luke',
+    currentPage: 1,
+  });
+
   it('should call onSearch with the correct search term when the Search button is clicked', () => {
     const onSearch = vi.fn();
-    const initialSearchTerm = 'Luke';
 
-    render(
-      <Search onSearch={onSearch} initialSearchTerm={initialSearchTerm} />
-    );
+    render(<Search onSearch={onSearch} />);
 
     const input = screen.getByRole('textbox');
-    expect(input).toHaveValue(initialSearchTerm);
+    expect(input).toHaveValue('Luke');
 
     fireEvent.change(input, { target: { value: 'Han Solo' } });
 
@@ -24,14 +29,11 @@ describe('Search component', () => {
 
   it('should update the input value when typing', () => {
     const onSearch = vi.fn();
-    const initialSearchTerm = '';
 
-    render(
-      <Search onSearch={onSearch} initialSearchTerm={initialSearchTerm} />
-    );
+    render(<Search onSearch={onSearch} />);
 
     const input = screen.getByRole('textbox');
-    expect(input).toHaveValue('');
+    expect(input).toHaveValue('Luke');
 
     fireEvent.change(input, { target: { value: 'Vader' } });
 
@@ -40,13 +42,10 @@ describe('Search component', () => {
 
   it('should have the correct initial value in the input field', () => {
     const onSearch = vi.fn();
-    const initialSearchTerm = 'Yoda';
 
-    render(
-      <Search onSearch={onSearch} initialSearchTerm={initialSearchTerm} />
-    );
+    render(<Search onSearch={onSearch} />);
 
     const input = screen.getByRole('textbox');
-    expect(input).toHaveValue(initialSearchTerm);
+    expect(input).toHaveValue('Luke');
   });
 });

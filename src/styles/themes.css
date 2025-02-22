@@ -1,0 +1,15 @@
+.main.light {
+  --background-color: white;
+  --text-color: black;
+  --button-background: #f0f0f0;
+  --button-text-color: #333;
+}
+
+.main.dark {
+  --background-color: #121212;
+  --text-color: white;
+  --button-background: #333;
+  --button-text-color: #fff;
+
+  --background-image: url('src/assets/star-wars.jpg');
+}

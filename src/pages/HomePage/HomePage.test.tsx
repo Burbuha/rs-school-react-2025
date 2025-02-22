@@ -3,6 +3,8 @@ import { HomePage } from './HomePage';
 import { vi, Mock } from 'vitest';
 import * as hooks from '../../hooks/useFetchData';
 import * as queryParams from '../../hooks/useQueryParams';
+import { Provider } from 'react-redux';
+import { store } from '../../store/store';
 
 vi.mock('../../hooks/useFetchData');
 vi.mock('../../hooks/useQueryParams');
@@ -28,7 +30,11 @@ describe('HomePage', () => {
       totalPages: 1,
     });
 
-    render(<HomePage />);
+    render(
+      <Provider store={store}>
+        <HomePage />
+      </Provider>
+    );
 
     expect(
       screen.getByText(/Characters within the Star Wars universe/)
@@ -51,7 +57,11 @@ describe('HomePage', () => {
       totalPages: 1,
     });
 
-    render(<HomePage />);
+    render(
+      <Provider store={store}>
+        <HomePage />
+      </Provider>
+    );
 
     const searchInput = screen.getByRole('textbox');
     const searchButton = screen.getByTestId('search');
@@ -78,7 +88,11 @@ describe('HomePage', () => {
       totalPages: 5,
     });
 
-    render(<HomePage />);
+    render(
+      <Provider store={store}>
+        <HomePage />
+      </Provider>
+    );
 
     const page2Button = screen.getByText(/Next/);
     fireEvent.click(page2Button);
@@ -88,7 +102,7 @@ describe('HomePage', () => {
     );
   });
 
-  it('shows error button when there is an error in data fetching', () => {
+  it('shows error message when there is an error in data fetching', () => {
     (queryParams.useQueryParams as Mock).mockReturnValue({
       searchTerm: '',
       currentPage: 1,
@@ -102,11 +116,13 @@ describe('HomePage', () => {
       totalPages: 1,
     });
 
-    render(<HomePage />);
+    render(
+      <Provider store={store}>
+        <HomePage />
+      </Provider>
+    );
 
-    expect(
-      screen.getByRole('button', { name: /Throw Error/i })
-    ).toBeInTheDocument();
+    expect(screen.getByText(/Something went wrong/i)).toBeInTheDocument();
   });
 
   it('renders loading state when fetching data', () => {
@@ -123,7 +139,11 @@ describe('HomePage', () => {
       totalPages: 1,
     });
 
-    render(<HomePage />);
+    render(
+      <Provider store={store}>
+        <HomePage />
+      </Provider>
+    );
 
     expect(screen.getByTestId('loader')).toBeInTheDocument();
   });

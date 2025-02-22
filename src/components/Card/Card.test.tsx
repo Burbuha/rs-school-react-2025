@@ -1,22 +1,43 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { Card } from './Card';
 import { vi } from 'vitest';
+import { Person } from '../../interfaces/person.interface.ts';
+import { store } from '../../store/store.ts';
+import { Provider } from 'react-redux';
 
 describe('Card Component', () => {
+  const person: Person = {
+    name: 'Luke Skywalker',
+    height: '172',
+    mass: '77',
+    gender: 'male',
+    birth_year: '19BBY',
+    eye_color: 'blue',
+    hair_color: 'blond',
+    skin_color: 'fair',
+  };
+
   it('renders the name prop correctly', () => {
-    const name = 'Luke Skywalker';
     const mockOnClick = vi.fn();
 
-    render(<Card name={name} onClick={mockOnClick} />);
+    render(
+      <Provider store={store}>
+        <Card person={person} onPersonClick={mockOnClick} />
+      </Provider>
+    );
 
-    expect(screen.getByRole('heading', { level: 3 })).toHaveTextContent(name);
+    expect(screen.getByTestId(person.name)).toHaveTextContent(person.name);
   });
 
   it('calls onClick when the card is clicked', () => {
     const name = 'Luke Skywalker';
     const mockOnClick = vi.fn();
 
-    render(<Card name={name} onClick={mockOnClick} />);
+    render(
+      <Provider store={store}>
+        <Card person={person} onPersonClick={mockOnClick} />
+      </Provider>
+    );
 
     const card = screen.getByText(name);
     fireEvent.click(card);
