@@ -1,5 +1,4 @@
 import { Outlet } from 'react-router-dom';
-import { useFetchData } from '../../hooks/useFetchData';
 import { useQueryParams } from '../../hooks/useQueryParams';
 import { Search } from '../../components/Search/Search';
 import { Results } from '../../components/Results/Results';
@@ -15,15 +14,11 @@ import { DownloadButton } from '../../components/DownloadButton/DownloadButton.t
 
 export const HomePage = () => {
   const { searchTerm, currentPage, updateQueryParams } = useQueryParams();
-  const { peoples, loading, error, totalPages } = useFetchData(
-    searchTerm,
-    currentPage
-  );
   const dispatch = useDispatch();
   const selectedItems = useSelector(
     (state: RootState) => state.selectedItems.items
   );
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
 
   const handleSearch = (term: string) => {
     updateQueryParams(term, 1);
@@ -46,29 +41,20 @@ export const HomePage = () => {
       <div className={styles.content}>
         <div className={styles.header}>
           <h1>Characters within the Star Wars universe</h1>
-          <ToggleButton onClick={toggleTheme} />
+          <ToggleButton />
         </div>
 
         <div className={styles.topControls}>
-          <Search onSearch={handleSearch} initialSearchTerm={searchTerm} />
+          <Search onSearch={handleSearch} />
         </div>
 
         <div className={styles.results}>
-          <Results
-            peoples={peoples}
-            loading={loading}
-            error={error}
-            onPersonClick={handlePersonClick}
-          />
+          <Results onPersonClick={handlePersonClick} />
           <Outlet />
         </div>
 
         <div className={styles.footer}>
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-          />
+          <Pagination onPageChange={handlePageChange} />
 
           {selectedItems.length > 0 && (
             <div className={styles.flyout}>

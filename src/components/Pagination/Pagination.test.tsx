@@ -1,66 +1,69 @@
-import { render, screen } from '@testing-library/react';
-import { vi } from 'vitest';
-import * as ReactRouterDom from 'react-router-dom';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { Pagination } from './Pagination';
+import { useQueryParams } from '../../hooks/useQueryParams.ts';
+import { useFetchData } from '../../hooks/useFetchData.ts';
+import { Mock, vi } from 'vitest';
 
-vi.mock('react-router-dom', async () => {
-  const actualReactRouterDom =
-    await vi.importActual<typeof ReactRouterDom>('react-router-dom');
-  return {
-    ...actualReactRouterDom,
-    useNavigate: vi.fn(),
-  };
-});
+vi.mock('../../hooks/useQueryParams.ts');
+vi.mock('../../hooks/useFetchData.ts');
 
 describe('Pagination Component', () => {
-  it('should disable the "Previous" button when on the first page', () => {
-    const currentPage = 1;
-    const totalPages = 5;
+  const onPageChangeMock = vi.fn();
 
-    render(
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={() => {}}
-      />
-    );
-
-    const previousButton = screen.getByText('Previous');
-    expect(previousButton).toBeDisabled();
+  beforeEach(() => {
+    (useQueryParams as Mock).mockReturnValue({
+      searchTerm: 'test',
+      currentPage: 1,
+    });
+    (useFetchData as Mock).mockReturnValue({
+      totalPages: 5,
+    });
   });
 
-  it('should disable the "Next" button when on the last page', () => {
-    const currentPage = 5;
-    const totalPages = 5;
+  it('renders pagination with correct page info and buttons', () => {
+    render(<Pagination onPageChange={onPageChangeMock} />);
 
-    render(
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={() => {}}
-      />
-    );
+    expect(screen.getByText('Page 1 of 5')).toBeInTheDocument();
+
+    expect(screen.getByText('Previous')).toBeInTheDocument();
+    expect(screen.getByText('Next')).toBeInTheDocument();
+  });
+
+  it('disables "Previous" button when on the first page', () => {
+    render(<Pagination onPageChange={onPageChangeMock} />);
+
+    const prevButton = screen.getByText('Previous');
+    expect(prevButton).toBeDisabled();
+  });
+
+  it('disables "Next" button when on the last page', () => {
+    (useQueryParams as Mock).mockReturnValue({
+      searchTerm: 'test',
+      currentPage: 5,
+    });
+
+    render(<Pagination onPageChange={onPageChangeMock} />);
 
     const nextButton = screen.getByText('Next');
     expect(nextButton).toBeDisabled();
   });
 
-  it('should enable both buttons when on a middle page', () => {
-    const currentPage = 3;
-    const totalPages = 5;
+  it('calls onPageChange when next button is clicked', () => {
+    render(<Pagination onPageChange={onPageChangeMock} />);
 
-    render(
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={() => {}}
-      />
-    );
+    fireEvent.click(screen.getByText('Next'));
+    expect(onPageChangeMock).toHaveBeenCalledWith(2);
+  });
 
-    const previousButton = screen.getByText('Previous');
-    const nextButton = screen.getByText('Next');
+  it('calls onPageChange when previous button is clicked', () => {
+    (useQueryParams as Mock).mockReturnValue({
+      searchTerm: 'test',
+      currentPage: 2,
+    });
 
-    expect(previousButton).not.toBeDisabled();
-    expect(nextButton).not.toBeDisabled();
+    render(<Pagination onPageChange={onPageChangeMock} />);
+
+    fireEvent.click(screen.getByText('Previous'));
+    expect(onPageChangeMock).toHaveBeenCalledWith(1);
   });
 });

@@ -1,13 +1,14 @@
 import { ChangeEvent, useState } from 'react';
 
 import styles from './Search.module.css';
+import { useQueryParams } from '../../hooks/useQueryParams.ts';
 
 interface Props {
   onSearch: (term: string) => void;
-  initialSearchTerm: string;
 }
 
-export const Search = ({ onSearch, initialSearchTerm }: Props) => {
+export const Search = ({ onSearch }: Props) => {
+  const { searchTerm: initialSearchTerm } = useQueryParams();
   const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {

@@ -1,18 +1,14 @@
 import styles from './ToggleButton.module.css';
 import { useTheme } from '../../context/ThemeContext.tsx';
 
-interface Props {
-  onClick: VoidFunction;
-}
-
-export const ToggleButton = ({ onClick }: Props) => {
-  const { theme } = useTheme();
+export const ToggleButton = () => {
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <div className={styles.container}>
       <input
         type="checkbox"
-        onClick={onClick}
+        onClick={toggleTheme}
         data-testid="theme-button"
         defaultChecked={theme === 'light'}
       />
