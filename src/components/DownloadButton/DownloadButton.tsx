@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../store/store.ts';
+import { RootState } from '../../store/store';
 
 export const DownloadButton = () => {
   const linkRef = useRef<HTMLAnchorElement>(null);
@@ -43,7 +43,7 @@ export const DownloadButton = () => {
   return (
     <>
       <button onClick={handleDownload}>Download</button>
-      <a ref={linkRef} style={{ display: 'none' }} />
+      <a data-testid="link" ref={linkRef} style={{ display: 'none' }} />
     </>
   );
 };
