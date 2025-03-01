@@ -1,3 +1,5 @@
+'use Client';
+
 import { createContext, useContext } from 'react';
 
 type ThemeContextType = {

@@ -32,7 +32,7 @@ export const DownloadButton = () => {
 
     if (linkRef.current) {
       linkRef.current.href = url;
-      linkRef.current.download = `${selectedItems.length}_items.csv`;
+      linkRef.current.download = `${selectedItems.length}_characters.csv`;
 
       linkRef.current.click();
     }

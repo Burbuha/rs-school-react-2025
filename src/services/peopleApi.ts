@@ -35,7 +35,13 @@ export const peopleApi = createApi({
         };
       },
     }),
+    getPersonDetails: builder.query<Person, string>({
+      query: (name) => `/?search=${name}`,
+      transformResponse: (response: { results: Person[] }) => {
+        return response.results[0];
+      },
+    }),
   }),
 });
 
-export const { useGetPeoplesQuery } = peopleApi;
+export const { useGetPeoplesQuery, useGetPersonDetailsQuery } = peopleApi;

@@ -7,6 +7,7 @@ export const ToggleButton = () => {
   return (
     <div className={styles.container}>
       <input
+        className={styles.toggleButton}
         type="checkbox"
         onClick={toggleTheme}
         data-testid="theme-button"

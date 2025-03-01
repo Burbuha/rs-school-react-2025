@@ -1,5 +1,5 @@
 .container {
-  input {
+  .toggleButton {
     -webkit-appearance: none;
     position: relative;
     width: 50px;
@@ -11,7 +11,7 @@
     cursor: pointer;
   }
 
-  input::after {
+  .toggleButton::after {
     content: '';
     position: absolute;
     top: 50%;
@@ -24,11 +24,11 @@
     transition: left .3s;
   }
 
-  input:checked {
+  .toggleButton:checked {
     background-color: rgb(119, 10, 149);
   }
 
-  input:checked::after {
+  .toggleButton:checked::after {
     left: 70%;
   }
 }

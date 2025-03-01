@@ -1,16 +1,15 @@
-import { useNavigate, useParams } from 'react-router-dom';
-import { Loader } from '../../components/Loader/Loader.tsx';
-import styles from './DetailsPage.module.css';
-import { useFetchDetails } from '../../hooks/useFetchDetails.ts';
+import { useRouter } from 'next/router';
+import { useFetchDetails } from '../hooks/useFetchDetails.ts';
+import { Loader } from '../components/Loader/Loader.tsx';
+import styles from '../styles/DetailsPage.module.css';
 
 export const DetailsPage = () => {
-  const { name } = useParams<{ name: string }>();
-  const { details, loading, error } = useFetchDetails(name || '');
-  const navigate = useNavigate();
+  const router = useRouter();
+  const { name, page, query } = router.query;
+  const { details, loading, error } = useFetchDetails(name as string);
 
-  const params = new URLSearchParams(location.search);
-  const search = params.get('query') || '';
-  const page = parseInt(params.get('page') || '1', 10);
+  const search = query || '';
+  const currentPage = parseInt(typeof page === 'string' ? page : '1', 10);
 
   if (loading) {
     return <Loader />;
@@ -21,7 +20,7 @@ export const DetailsPage = () => {
   }
 
   if (!details) {
-    navigate('/not-found', { replace: true });
+    router.push('/not-found');
 
     return;
   }
@@ -33,7 +32,7 @@ export const DetailsPage = () => {
         <button
           data-testid="close-button"
           className={styles.closeButton}
-          onClick={() => navigate(`/?query=${search}&page=${page}`)}
+          onClick={() => router.push(`/?query=${search}&page=${currentPage}`)}
         >
           X
         </button>
@@ -50,3 +49,5 @@ export const DetailsPage = () => {
     </div>
   );
 };
+
+export default DetailsPage;

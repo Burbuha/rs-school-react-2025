@@ -1,21 +1,23 @@
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useCallback, useEffect, useState } from 'react';
-import { useLocalStorage } from './useLocalStorage.ts';
+import { useEffect, useState, useCallback } from 'react';
+import { useRouter } from 'next/router';
+import { useLocalStorage } from './useLocalStorage';
 
 export const useQueryParams = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useLocalStorage('searchTerm', '');
-  const [currentPage, setCurrentPage] = useState(1);
+  const router = useRouter();
+  const { storedValue: searchTerm, setValue: setSearchTerm } = useLocalStorage(
+    'searchTerm',
+    ''
+  );
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const search = params.get('query') || '';
-    const page = parseInt(params.get('page') || '1', 10);
+    const { query, page } = router.query;
+    const search = typeof query === 'string' ? query : '';
+    const currentPage = parseInt(typeof page === 'string' ? page : '1', 10);
 
     setSearchTerm(search);
-    setCurrentPage(page);
-  }, [location.search, setSearchTerm]);
+    setCurrentPage(currentPage);
+  }, [router.query, setSearchTerm]);
 
   const updateQueryParams = useCallback(
     (search: string, page: number, name?: string) => {
@@ -24,13 +26,13 @@ export const useQueryParams = () => {
       if (search) params.set('query', search);
       if (page) params.set('page', page.toString());
 
-      if (name) {
-        navigate(`/${name}?${params.toString()}`);
-      } else {
-        navigate(`/?${params.toString()}`);
-      }
+      const newUrl = name
+        ? `/${name}?${params.toString()}`
+        : `/?${params.toString()}`;
+
+      router.push(newUrl);
     },
-    [navigate]
+    [router]
   );
 
   useEffect(() => {

@@ -11,5 +11,5 @@
   --button-background: #333;
   --button-text-color: #fff;
 
-  --background-image: url('src/assets/star-wars.jpg');
+  --background-image: url('/star-wars.jpg');
 }
