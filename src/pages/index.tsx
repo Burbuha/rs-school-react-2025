@@ -1,17 +1,15 @@
+import { useQueryParams } from '../hooks/useQueryParams';
 import { useDispatch, useSelector } from 'react-redux';
-import { useQueryParams } from '../hooks/useQueryParams.ts';
+import styles from '../styles/HomePage.module.css';
 import { RootState } from '../store/store.ts';
 import { useTheme } from '../context/ThemeContext.tsx';
+import { Person } from '../interfaces/person.interface.ts';
 import { unselectAll } from '../store/slices/selectedItemsSlice.ts';
 import { ToggleButton } from '../components/ToggleButton/ToggleButton.tsx';
 import { Search } from '../components/Search/Search.tsx';
 import { Results } from '../components/Results/Results.tsx';
 import { Pagination } from '../components/Pagination/Pagination.tsx';
 import { DownloadButton } from '../components/DownloadButton/DownloadButton.tsx';
-import styles from '../styles/HomePage.module.css';
-import { router } from 'next/client';
-import DetailsPage from './[name].tsx';
-import { Person } from '../interfaces/person.interface.ts';
 
 export const HomePage = () => {
   const { searchTerm, currentPage, updateQueryParams } = useQueryParams();
@@ -51,7 +49,6 @@ export const HomePage = () => {
 
         <div className={styles.results}>
           <Results onPersonClick={handlePersonClick} />
-          {router?.pathname.includes(`/details/${name}`) && <DetailsPage />}
         </div>
 
         <div className={styles.footer}>

@@ -13,10 +13,10 @@ export const useQueryParams = () => {
   useEffect(() => {
     const { query, page } = router.query;
     const search = typeof query === 'string' ? query : '';
-    const currentPage = parseInt(typeof page === 'string' ? page : '1', 10);
+    const pageNumber = parseInt(typeof page === 'string' ? page : '1', 10);
 
     setSearchTerm(search);
-    setCurrentPage(currentPage);
+    setCurrentPage(pageNumber);
   }, [router.query, setSearchTerm]);
 
   const updateQueryParams = useCallback(
@@ -30,16 +30,10 @@ export const useQueryParams = () => {
         ? `/${name}?${params.toString()}`
         : `/?${params.toString()}`;
 
-      router.push(newUrl);
+      router.push(newUrl, undefined, { shallow: true });
     },
     [router]
   );
-
-  useEffect(() => {
-    if (window.location.pathname === '/') {
-      updateQueryParams(searchTerm, currentPage);
-    }
-  }, [currentPage, searchTerm, updateQueryParams]);
 
   return { searchTerm, currentPage, updateQueryParams };
 };

@@ -1,10 +1,10 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { HomePage } from './HomePage';
 import { vi, Mock } from 'vitest';
-import * as hooks from '../../hooks/useFetchData';
-import * as queryParams from '../../hooks/useQueryParams';
+import * as hooks from '../hooks/useFetchData';
+import * as queryParams from '../hooks/useQueryParams';
 import { Provider } from 'react-redux';
-import { store } from '../../store/store';
+import HomePage from '../pages';
+import { store } from '../store/store';
 
 vi.mock('../../hooks/useFetchData');
 vi.mock('../../hooks/useQueryParams');

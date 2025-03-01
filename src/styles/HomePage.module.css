@@ -1,4 +1,4 @@
-.content{
+.content {
   max-width: 1280px;
   height: 100vh;
   display: flex;
@@ -29,7 +29,7 @@
 
   &::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    background-color: #ffffff;
+    background-color: #a1a1a1;
   }
 
   &::-webkit-scrollbar-track {

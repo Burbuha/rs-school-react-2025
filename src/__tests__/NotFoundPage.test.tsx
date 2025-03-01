@@ -1,14 +1,13 @@
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
-import { NotFoundPage } from './NotFoundPage';
+import NotFound from '../pages/404.tsx';
+
+vi.mock('next/router', () => ({
+  useRouter: vi.fn(),
+}));
 
 describe('NotFoundPage', () => {
   it('renders the NotFoundPage component', () => {
-    render(
-      <MemoryRouter>
-        <NotFoundPage />
-      </MemoryRouter>
-    );
+    render(<NotFound />);
 
     expect(screen.getByText(/Go Home/i)).toBeInTheDocument();
   });

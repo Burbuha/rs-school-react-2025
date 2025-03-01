@@ -1,19 +1,17 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { DetailsPage } from './DetailsPage';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useFetchDetails } from '../../hooks/useFetchDetails';
+import { useRouter } from 'next/router';
 import { Mock } from 'vitest';
+import DetailsPage from '../pages/[name].tsx';
+import { useFetchDetails } from '../hooks/useFetchDetails.ts';
 
-vi.mock('react-router-dom', () => ({
-  useNavigate: vi.fn(),
-  useParams: vi.fn(),
+vi.mock('next/router', () => ({
+  useRouter: vi.fn(),
 }));
 
 vi.mock('../../hooks/useFetchDetails');
 
 describe('DetailsPage', () => {
-  const mockUseNavigate = useNavigate as Mock;
-  const mockUseParams = useParams as Mock;
+  const mockUseRouter = useRouter as Mock;
   const mockUseFetchDetails = useFetchDetails as Mock;
 
   beforeEach(() => {
@@ -21,7 +19,10 @@ describe('DetailsPage', () => {
   });
 
   it('renders loading state', () => {
-    mockUseParams.mockReturnValue({ name: 'Luke' });
+    mockUseRouter.mockReturnValue({
+      query: { name: 'Luke' },
+      isReady: true,
+    });
     mockUseFetchDetails.mockReturnValue({
       details: null,
       loading: true,
@@ -34,7 +35,10 @@ describe('DetailsPage', () => {
   });
 
   it('renders error state', () => {
-    mockUseParams.mockReturnValue({ name: 'Luke' });
+    mockUseRouter.mockReturnValue({
+      query: { name: 'Luke' },
+      isReady: true,
+    });
     mockUseFetchDetails.mockReturnValue({
       details: null,
       loading: false,
@@ -49,7 +53,10 @@ describe('DetailsPage', () => {
   });
 
   it('renders character details correctly', () => {
-    mockUseParams.mockReturnValue({ name: 'Luke' });
+    mockUseRouter.mockReturnValue({
+      query: { name: 'Luke' },
+      isReady: true,
+    });
     mockUseFetchDetails.mockReturnValue({
       details: {
         name: 'Luke Skywalker',
@@ -78,10 +85,12 @@ describe('DetailsPage', () => {
   });
 
   it('navigates to the home page when close button is clicked', () => {
-    const mockNavigate = vi.fn();
-    mockUseNavigate.mockReturnValue(mockNavigate);
-
-    mockUseParams.mockReturnValue({ name: 'Luke' });
+    const mockPush = vi.fn();
+    mockUseRouter.mockReturnValue({
+      query: { name: 'Luke', page: '1', query: '' },
+      push: mockPush,
+      isReady: true,
+    });
     mockUseFetchDetails.mockReturnValue({
       details: {
         name: 'Luke Skywalker',
@@ -102,14 +111,16 @@ describe('DetailsPage', () => {
     const closeButton = screen.getByTestId('close-button');
     fireEvent.click(closeButton);
 
-    expect(mockNavigate).toHaveBeenCalledWith('/?query=&page=1');
+    expect(mockPush).toHaveBeenCalledWith('/?query=&page=1');
   });
 
   it('redirects to /not-found when details are not found', async () => {
-    const mockNavigate = vi.fn();
-    mockUseNavigate.mockReturnValue(mockNavigate);
-
-    mockUseParams.mockReturnValue({ name: 'Luke' });
+    const mockPush = vi.fn();
+    mockUseRouter.mockReturnValue({
+      query: { name: 'Luke' },
+      push: mockPush,
+      isReady: true,
+    });
     mockUseFetchDetails.mockReturnValue({
       details: null,
       loading: false,
@@ -119,7 +130,7 @@ describe('DetailsPage', () => {
     render(<DetailsPage />);
 
     await waitFor(() =>
-      expect(mockNavigate).toHaveBeenCalledWith('/not-found', { replace: true })
+      expect(mockPush).toHaveBeenCalledWith('/not-found', { replace: true })
     );
   });
 });

@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
-import { useFetchDetails } from '../hooks/useFetchDetails.ts';
-import { Loader } from '../components/Loader/Loader.tsx';
+import { useFetchDetails } from '../hooks/useFetchDetails';
 import styles from '../styles/DetailsPage.module.css';
+import { Loader } from '../components/Loader/Loader.tsx';
 
 export const DetailsPage = () => {
   const router = useRouter();
@@ -22,7 +22,7 @@ export const DetailsPage = () => {
   if (!details) {
     router.push('/not-found');
 
-    return;
+    return null;
   }
 
   return (
@@ -32,7 +32,11 @@ export const DetailsPage = () => {
         <button
           data-testid="close-button"
           className={styles.closeButton}
-          onClick={() => router.push(`/?query=${search}&page=${currentPage}`)}
+          onClick={() =>
+            router.push(`/?query=${search}&page=${currentPage}`, undefined, {
+              shallow: true,
+            })
+          }
         >
           X
         </button>

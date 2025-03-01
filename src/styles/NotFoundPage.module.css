@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 100vh;
+  max-width: 1200px;
+  background-color: #ffffff;
+  background-image: url('/404.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.container button {
+  margin-top: 20px;
+  font-size: 34px;
+  height: 90px;
+}
