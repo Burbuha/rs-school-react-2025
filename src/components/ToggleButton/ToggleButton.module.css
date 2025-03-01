@@ -6,7 +6,7 @@
     height: 30px;
     border-radius: 25px;
     background-color: #ccc;
-    transition: background .3s;
+    transition: background 0.3s;
     outline: none;
     cursor: pointer;
   }
@@ -21,7 +21,7 @@
     height: 1.25rem;
     width: 1.25rem;
     background-color: rgb(255, 255, 255);
-    transition: left .3s;
+    transition: left 0.3s;
   }
 
   .toggleButton:checked {
