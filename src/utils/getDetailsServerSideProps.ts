@@ -5,8 +5,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const data = await fetch(`https://swapi.dev/api/people/?search=${name}`);
   const result = await data.json();
 
-  console.log(name, result);
-
   return {
     props: {
       details: result.results?.[0] || null,
