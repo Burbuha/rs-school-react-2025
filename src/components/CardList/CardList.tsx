@@ -8,7 +8,7 @@ interface Props {
 }
 
 export const CardList = ({ items, onPersonClick }: Props) => {
-  if (!items.length) {
+  if (!items?.length) {
     return <div className={styles.noData}>No data...</div>;
   }
 

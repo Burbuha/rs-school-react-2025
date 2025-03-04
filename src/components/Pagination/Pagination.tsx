@@ -1,14 +1,13 @@
-import styles from './Pagination.module.css';
 import { useQueryParams } from '../../hooks/useQueryParams.ts';
-import { useFetchData } from '../../hooks/useFetchData.ts';
+import styles from './Pagination.module.css';
 
 interface Props {
   onPageChange: (page: number) => void;
+  totalPages: number;
 }
 
-export const Pagination = ({ onPageChange }: Props) => {
-  const { searchTerm, currentPage } = useQueryParams();
-  const { totalPages } = useFetchData(searchTerm, currentPage);
+export const Pagination = ({ onPageChange, totalPages }: Props) => {
+  const { currentPage } = useQueryParams();
 
   return (
     <div className={styles.pagination} data-testid="pagination">

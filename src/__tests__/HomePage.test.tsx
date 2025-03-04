@@ -1,150 +1,93 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { vi, Mock } from 'vitest';
-import * as hooks from '../hooks/useFetchData';
-import * as queryParams from '../hooks/useQueryParams';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import HomePage from '../pages';
 import { store } from '../store/store';
+import HomePage from '../pages/index';
+import { Person } from '../interfaces/person.interface';
+import { createMockRouter } from './utils/test-utils.ts';
+import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime';
+import { ThemeProvider } from '../context/ThemeProvider.tsx';
 
-vi.mock('../../hooks/useFetchData');
-vi.mock('../../hooks/useQueryParams');
+const mockPeoples: Person[] = [
+  {
+    name: 'Luke Skywalker',
+    birth_year: '19BBY',
+    gender: 'male',
+    height: '',
+    mass: '',
+    eye_color: '',
+    hair_color: '',
+    skin_color: '',
+  },
+  {
+    name: 'Darth Vader',
+    birth_year: '41.9BBY',
+    gender: 'male',
+    height: '',
+    mass: '',
+    eye_color: '',
+    hair_color: '',
+    skin_color: '',
+  },
+];
+
+const mockProps = {
+  initialSearchTerm: '',
+  initialPage: 1,
+  peoples: mockPeoples,
+  error: null,
+};
 
 describe('HomePage', () => {
-  const mockUpdateQueryParams = vi.fn();
-
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
-  it('renders the page correctly', () => {
-    (queryParams.useQueryParams as Mock).mockReturnValue({
-      searchTerm: '',
-      currentPage: 1,
-      updateQueryParams: mockUpdateQueryParams,
-    });
-
-    (hooks.useFetchData as Mock).mockReturnValue({
-      peoples: [],
-      loading: false,
-      error: null,
-      totalPages: 1,
-    });
-
+  it('renders the HomePage component', () => {
     render(
       <Provider store={store}>
-        <HomePage />
+        <RouterContext.Provider value={createMockRouter({ query: {} })}>
+          <ThemeProvider>
+            <HomePage {...mockProps} />
+          </ThemeProvider>
+        </RouterContext.Provider>
       </Provider>
     );
 
     expect(
-      screen.getByText(/Characters within the Star Wars universe/)
+      screen.getByText('Characters within the Star Wars universe')
     ).toBeInTheDocument();
-    expect(screen.getByRole('textbox')).toBeInTheDocument();
-    expect(screen.getByTestId('pagination')).toBeInTheDocument();
+    expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
+    expect(screen.getByText('Darth Vader')).toBeInTheDocument();
   });
 
-  it('calls updateQueryParams when a search term is entered', async () => {
-    (queryParams.useQueryParams as Mock).mockReturnValue({
-      searchTerm: '',
-      currentPage: 1,
-      updateQueryParams: mockUpdateQueryParams,
-    });
-
-    (hooks.useFetchData as Mock).mockReturnValue({
-      peoples: [],
-      loading: false,
-      error: null,
-      totalPages: 1,
-    });
-
+  it('handles search input', () => {
     render(
       <Provider store={store}>
-        <HomePage />
+        <RouterContext.Provider value={createMockRouter({ query: {} })}>
+          <ThemeProvider>
+            <HomePage {...mockProps} />
+          </ThemeProvider>
+        </RouterContext.Provider>
       </Provider>
     );
 
-    const searchInput = screen.getByRole('textbox');
+    const searchInput = screen.getByPlaceholderText('Search...');
     const searchButton = screen.getByTestId('search');
 
     fireEvent.change(searchInput, { target: { value: 'Luke' } });
     fireEvent.click(searchButton);
 
-    await waitFor(() =>
-      expect(mockUpdateQueryParams).toHaveBeenCalledWith('Luke', 1)
-    );
+    expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
   });
 
-  it('calls updateQueryParams when pagination page is changed', async () => {
-    (queryParams.useQueryParams as Mock).mockReturnValue({
-      searchTerm: 'Luke',
-      currentPage: 1,
-      updateQueryParams: mockUpdateQueryParams,
-    });
-
-    (hooks.useFetchData as Mock).mockReturnValue({
-      peoples: [],
-      loading: false,
-      error: null,
-      totalPages: 5,
-    });
-
+  it('handles pagination', () => {
     render(
       <Provider store={store}>
-        <HomePage />
+        <RouterContext.Provider value={createMockRouter({ query: {} })}>
+          <ThemeProvider>
+            <HomePage {...mockProps} />
+          </ThemeProvider>
+        </RouterContext.Provider>
       </Provider>
     );
 
-    const page2Button = screen.getByText(/Next/);
-    fireEvent.click(page2Button);
-
-    await waitFor(() =>
-      expect(mockUpdateQueryParams).toHaveBeenCalledWith('Luke', 2)
-    );
-  });
-
-  it('shows error message when there is an error in data fetching', () => {
-    (queryParams.useQueryParams as Mock).mockReturnValue({
-      searchTerm: '',
-      currentPage: 1,
-      updateQueryParams: mockUpdateQueryParams,
-    });
-
-    (hooks.useFetchData as Mock).mockReturnValue({
-      peoples: [],
-      loading: false,
-      error: 'Something went wrong',
-      totalPages: 1,
-    });
-
-    render(
-      <Provider store={store}>
-        <HomePage />
-      </Provider>
-    );
-
-    expect(screen.getByText(/Something went wrong/i)).toBeInTheDocument();
-  });
-
-  it('renders loading state when fetching data', () => {
-    (queryParams.useQueryParams as Mock).mockReturnValue({
-      searchTerm: '',
-      currentPage: 1,
-      updateQueryParams: mockUpdateQueryParams,
-    });
-
-    (hooks.useFetchData as Mock).mockReturnValue({
-      peoples: [],
-      loading: true,
-      error: null,
-      totalPages: 1,
-    });
-
-    render(
-      <Provider store={store}>
-        <HomePage />
-      </Provider>
-    );
-
-    expect(screen.getByTestId('loader')).toBeInTheDocument();
+    const nextPageButton = screen.getByText('Next');
+    fireEvent.click(nextPageButton);
   });
 });

@@ -72,7 +72,7 @@ describe('DownloadButton', () => {
 
     const link = screen.getByTestId('link') as HTMLAnchorElement;
 
-    expect(link.download).toBe('2_items.csv');
+    expect(link.download).toBe('2_characters.csv');
 
     const expectedCSV = [
       'Name,Birth year,Gender,Height,Mass,Eye color,Hair color,Skin color',

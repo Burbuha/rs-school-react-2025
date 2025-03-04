@@ -1,28 +1,35 @@
+import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import { useFetchDetails } from '../hooks/useFetchDetails';
+import { getServerSideProps as getDetailsServerSideProps } from '../utils/getDetailsServerSideProps';
 import styles from '../styles/DetailsPage.module.css';
-import { Loader } from '../components/Loader/Loader.tsx';
 
-export const DetailsPage = () => {
+interface Props {
+  details: {
+    name: string;
+    birth_year: string;
+    gender: string;
+    height: string;
+    mass: string;
+    eye_color: string;
+    hair_color: string;
+    skin_color: string;
+  } | null;
+  error: string | null;
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  return getDetailsServerSideProps(context);
+};
+
+const DetailsPage = ({ details, error }: Props) => {
   const router = useRouter();
-  const { name, page, query } = router.query;
-  const { details, loading, error } = useFetchDetails(name as string);
+  const { page, query } = router.query;
 
   const search = query || '';
   const currentPage = parseInt(typeof page === 'string' ? page : '1', 10);
 
-  if (loading) {
-    return <Loader />;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
   if (!details) {
-    router.push('/not-found');
-
-    return null;
+    return <div>Error: {error}</div>;
   }
 
   return (

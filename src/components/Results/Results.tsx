@@ -1,22 +1,14 @@
 import { CardList } from '../CardList/CardList.tsx';
-import { Loader } from '../Loader/Loader.tsx';
 import { Person } from '../../interfaces/person.interface.ts';
 import styles from './Results.module.css';
-import { useQueryParams } from '../../hooks/useQueryParams.ts';
-import { useFetchData } from '../../hooks/useFetchData.ts';
 
 interface Props {
+  peoples: Person[];
+  error: string | null;
   onPersonClick: (person: Person) => void;
 }
 
-export const Results = ({ onPersonClick }: Props) => {
-  const { searchTerm, currentPage } = useQueryParams();
-  const { peoples, loading, error } = useFetchData(searchTerm, currentPage);
-
-  if (loading) {
-    return <Loader />;
-  }
-
+export const Results = ({ peoples, error, onPersonClick }: Props) => {
   if (error) {
     return (
       <div>

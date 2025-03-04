@@ -1,7 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { Pagination } from './Pagination';
 import { useQueryParams } from '../../hooks/useQueryParams.ts';
-import { useFetchData } from '../../hooks/useFetchData.ts';
 import { Mock, vi } from 'vitest';
 
 vi.mock('../../hooks/useQueryParams.ts');
@@ -12,16 +11,12 @@ describe('Pagination Component', () => {
 
   beforeEach(() => {
     (useQueryParams as Mock).mockReturnValue({
-      searchTerm: 'test',
       currentPage: 1,
-    });
-    (useFetchData as Mock).mockReturnValue({
-      totalPages: 5,
     });
   });
 
   it('renders pagination with correct page info and buttons', () => {
-    render(<Pagination onPageChange={onPageChangeMock} />);
+    render(<Pagination onPageChange={onPageChangeMock} totalPages={5} />);
 
     expect(screen.getByText('Page 1 of 5')).toBeInTheDocument();
 
@@ -30,7 +25,7 @@ describe('Pagination Component', () => {
   });
 
   it('disables "Previous" button when on the first page', () => {
-    render(<Pagination onPageChange={onPageChangeMock} />);
+    render(<Pagination onPageChange={onPageChangeMock} totalPages={5} />);
 
     const prevButton = screen.getByText('Previous');
     expect(prevButton).toBeDisabled();
@@ -38,18 +33,17 @@ describe('Pagination Component', () => {
 
   it('disables "Next" button when on the last page', () => {
     (useQueryParams as Mock).mockReturnValue({
-      searchTerm: 'test',
       currentPage: 5,
     });
 
-    render(<Pagination onPageChange={onPageChangeMock} />);
+    render(<Pagination onPageChange={onPageChangeMock} totalPages={5} />);
 
     const nextButton = screen.getByText('Next');
     expect(nextButton).toBeDisabled();
   });
 
   it('calls onPageChange when next button is clicked', () => {
-    render(<Pagination onPageChange={onPageChangeMock} />);
+    render(<Pagination onPageChange={onPageChangeMock} totalPages={5} />);
 
     fireEvent.click(screen.getByText('Next'));
     expect(onPageChangeMock).toHaveBeenCalledWith(2);
@@ -61,7 +55,7 @@ describe('Pagination Component', () => {
       currentPage: 2,
     });
 
-    render(<Pagination onPageChange={onPageChangeMock} />);
+    render(<Pagination onPageChange={onPageChangeMock} totalPages={5} />);
 
     fireEvent.click(screen.getByText('Previous'));
     expect(onPageChangeMock).toHaveBeenCalledWith(1);
