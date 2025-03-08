@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { ThemeProvider } from './ThemeProvider';
+import { AppProviders } from './AppProviders.tsx';
 import { ThemeContext } from './ThemeContext';
 import { useContext } from 'react';
 
@@ -19,9 +19,9 @@ const TestComponent = () => {
 describe('ThemeProvider', () => {
   it('renders children correctly', () => {
     render(
-      <ThemeProvider>
+      <AppProviders>
         <TestComponent />
-      </ThemeProvider>
+      </AppProviders>
     );
 
     expect(screen.getByTestId('theme-button')).toBeInTheDocument();
@@ -29,9 +29,9 @@ describe('ThemeProvider', () => {
 
   it('provides the correct theme context value', () => {
     render(
-      <ThemeProvider>
+      <AppProviders>
         <TestComponent />
-      </ThemeProvider>
+      </AppProviders>
     );
 
     expect(screen.getByTestId('theme-text')).toHaveTextContent('dark');
@@ -39,9 +39,9 @@ describe('ThemeProvider', () => {
 
   it('toggles theme from dark to light', () => {
     render(
-      <ThemeProvider>
+      <AppProviders>
         <TestComponent />
-      </ThemeProvider>
+      </AppProviders>
     );
 
     expect(screen.getByTestId('theme-text')).toHaveTextContent('dark');
@@ -51,9 +51,9 @@ describe('ThemeProvider', () => {
 
   it('toggles theme from light to dark', () => {
     render(
-      <ThemeProvider>
+      <AppProviders>
         <TestComponent />
-      </ThemeProvider>
+      </AppProviders>
     );
 
     fireEvent.click(screen.getByTestId('theme-button'));

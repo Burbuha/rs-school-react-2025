@@ -1,5 +1,4 @@
 import { configureStore } from '@reduxjs/toolkit';
-
 import selectedItemsReducer from './slices/selectedItemsSlice';
 
 export const store = configureStore({

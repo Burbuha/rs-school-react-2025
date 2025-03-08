@@ -14,7 +14,7 @@ describe('Search component', () => {
   it('should call onSearch with the correct search term when the Search button is clicked', () => {
     const onSearch = vi.fn();
 
-    render(<Search onSearch={onSearch} />);
+    render(<Search onSearchAction={onSearch} />);
 
     const input = screen.getByRole('textbox');
     expect(input).toHaveValue('Luke');
@@ -30,7 +30,7 @@ describe('Search component', () => {
   it('should update the input value when typing', () => {
     const onSearch = vi.fn();
 
-    render(<Search onSearch={onSearch} />);
+    render(<Search onSearchAction={onSearch} />);
 
     const input = screen.getByRole('textbox');
     expect(input).toHaveValue('Luke');
@@ -43,7 +43,7 @@ describe('Search component', () => {
   it('should have the correct initial value in the input field', () => {
     const onSearch = vi.fn();
 
-    render(<Search onSearch={onSearch} />);
+    render(<Search onSearchAction={onSearch} />);
 
     const input = screen.getByRole('textbox');
     expect(input).toHaveValue('Luke');

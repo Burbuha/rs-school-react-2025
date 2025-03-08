@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { createMockRouter } from './utils/test-utils';
 import { vi } from 'vitest';
-import DetailsPage from '../pages/[name].tsx';
 import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime';
+import DetailsPageClient from '../components/DetailsPageClient/DetailsPageClient';
 
 vi.mock('../utils/getDetailsServerSideProps', () => ({
   getDetailsServerSideProps: vi.fn().mockResolvedValue({
@@ -28,7 +28,7 @@ describe('DetailsPage', () => {
       <RouterContext.Provider
         value={createMockRouter({ query: { name: 'Luke Skywalker' } })}
       >
-        <DetailsPage
+        <DetailsPageClient
           details={{
             name: 'Luke Skywalker',
             birth_year: '19BBY',
@@ -39,7 +39,8 @@ describe('DetailsPage', () => {
             hair_color: 'blond',
             skin_color: 'fair',
           }}
-          error={null}
+          search={''}
+          currentPage={1}
         />
       </RouterContext.Provider>
     );
@@ -52,19 +53,5 @@ describe('DetailsPage', () => {
     expect(screen.getByText('Eye color: blue')).toBeInTheDocument();
     expect(screen.getByText('Hair color: blond')).toBeInTheDocument();
     expect(screen.getByText('Skin color: fair')).toBeInTheDocument();
-  });
-
-  it('renders error message when there is an error', () => {
-    render(
-      <RouterContext.Provider
-        value={createMockRouter({ query: { name: 'Unknown' } })}
-      >
-        <DetailsPage details={null} error="Error fetching details" />
-      </RouterContext.Provider>
-    );
-
-    expect(
-      screen.getByText('Error: Error fetching details')
-    ).toBeInTheDocument();
   });
 });

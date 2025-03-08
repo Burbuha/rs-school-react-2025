@@ -22,7 +22,7 @@ describe('Card Component', () => {
 
     render(
       <Provider store={store}>
-        <Card person={person} onPersonClick={mockOnClick} />
+        <Card person={person} onPersonClickAction={mockOnClick} />
       </Provider>
     );
 
@@ -35,7 +35,7 @@ describe('Card Component', () => {
 
     render(
       <Provider store={store}>
-        <Card person={person} onPersonClick={mockOnClick} />
+        <Card person={person} onPersonClickAction={mockOnClick} />
       </Provider>
     );
 

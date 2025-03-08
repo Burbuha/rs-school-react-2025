@@ -1,11 +1,23 @@
 import { render, screen, fireEvent } from '@testing-library/react';
+import { vi } from 'vitest';
+
 import { Provider } from 'react-redux';
 import { store } from '../store/store';
-import HomePage from '../pages/index';
+import { AppProviders } from '../context/AppProviders';
+import HomePageClient from '../components/HomePageClient/HomePageClient';
 import { Person } from '../interfaces/person.interface';
-import { createMockRouter } from './utils/test-utils.ts';
-import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime';
-import { ThemeProvider } from '../context/ThemeProvider.tsx';
+import { MemoryRouterProvider } from 'next-router-mock/MemoryRouterProvider';
+
+vi.mock('next/navigation', () => ({
+  useRouter: vi.fn(() => ({
+    push: vi.fn(),
+    replace: vi.fn(),
+    refresh: vi.fn(),
+    prefetch: vi.fn(),
+  })),
+  usePathname: vi.fn(() => '/'),
+  useSearchParams: vi.fn(() => new URLSearchParams()),
+}));
 
 const mockPeoples: Person[] = [
   {
@@ -35,17 +47,18 @@ const mockProps = {
   initialPage: 1,
   peoples: mockPeoples,
   error: null,
+  count: 5,
 };
 
 describe('HomePage', () => {
-  it('renders the HomePage component', () => {
+  it('renders the HomePageClient component', () => {
     render(
       <Provider store={store}>
-        <RouterContext.Provider value={createMockRouter({ query: {} })}>
-          <ThemeProvider>
-            <HomePage {...mockProps} />
-          </ThemeProvider>
-        </RouterContext.Provider>
+        <AppProviders>
+          <MemoryRouterProvider>
+            <HomePageClient {...mockProps} />
+          </MemoryRouterProvider>
+        </AppProviders>
       </Provider>
     );
 
@@ -59,11 +72,11 @@ describe('HomePage', () => {
   it('handles search input', () => {
     render(
       <Provider store={store}>
-        <RouterContext.Provider value={createMockRouter({ query: {} })}>
-          <ThemeProvider>
-            <HomePage {...mockProps} />
-          </ThemeProvider>
-        </RouterContext.Provider>
+        <AppProviders>
+          <MemoryRouterProvider>
+            <HomePageClient {...mockProps} />
+          </MemoryRouterProvider>
+        </AppProviders>
       </Provider>
     );
 
@@ -79,11 +92,11 @@ describe('HomePage', () => {
   it('handles pagination', () => {
     render(
       <Provider store={store}>
-        <RouterContext.Provider value={createMockRouter({ query: {} })}>
-          <ThemeProvider>
-            <HomePage {...mockProps} />
-          </ThemeProvider>
-        </RouterContext.Provider>
+        <AppProviders>
+          <MemoryRouterProvider>
+            <HomePageClient {...mockProps} />
+          </MemoryRouterProvider>
+        </AppProviders>
       </Provider>
     );
 

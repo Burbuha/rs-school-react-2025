@@ -6,12 +6,12 @@ import { vi } from 'vitest';
 vi.mock('../Card/Card.tsx', () => ({
   Card: ({
     person,
-    onPersonClick,
+    onPersonClickAction,
   }: {
     person: Person;
-    onPersonClick: (person: Person) => void;
+    onPersonClickAction: (person: Person) => void;
   }) => (
-    <div data-testid="mock-card" onClick={() => onPersonClick(person)}>
+    <div data-testid="mock-card" onClick={() => onPersonClickAction(person)}>
       <h3>{person.name}</h3>
     </div>
   ),
@@ -44,19 +44,23 @@ describe('CardList Component', () => {
   ];
 
   it('renders the correct number of Card components', () => {
-    render(<CardList items={mockItems} onPersonClick={mockOnPersonClick} />);
+    render(
+      <CardList items={mockItems} onPersonClickAction={mockOnPersonClick} />
+    );
 
     expect(screen.getAllByTestId('mock-card')).toHaveLength(mockItems.length);
   });
 
   it('displays "No data..." when there are no cards', () => {
-    render(<CardList items={[]} onPersonClick={mockOnPersonClick} />);
+    render(<CardList items={[]} onPersonClickAction={mockOnPersonClick} />);
 
     expect(screen.getByText('No data...')).toBeInTheDocument();
   });
 
   it('calls onPersonClick with the correct person when a card is clicked', () => {
-    render(<CardList items={mockItems} onPersonClick={mockOnPersonClick} />);
+    render(
+      <CardList items={mockItems} onPersonClickAction={mockOnPersonClick} />
+    );
 
     const lukeCard = screen.getByText('Luke Skywalker');
     fireEvent.click(lukeCard);

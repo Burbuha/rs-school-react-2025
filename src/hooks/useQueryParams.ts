@@ -1,29 +1,27 @@
+'use client';
+
 import { useEffect, useState, useCallback } from 'react';
-import { useRouter } from 'next/router';
-import { useLocalStorage } from './useLocalStorage';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export const useQueryParams = (
   initialSearchTerm: string = '',
   initialPage: number = 1
 ) => {
   const router = useRouter();
-  const { storedValue: searchTerm, setValue: setSearchTerm } = useLocalStorage(
-    'searchTerm',
-    initialSearchTerm
-  );
+  const searchParams = useSearchParams();
+  const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
   const [currentPage, setCurrentPage] = useState<number>(initialPage);
 
   useEffect(() => {
-    const { query, page } = router.query;
-    const search = typeof query === 'string' ? query : initialSearchTerm;
-    const pageNumber = parseInt(
-      typeof page === 'string' ? page : initialPage.toString(),
+    const query = searchParams.get('query') || initialSearchTerm;
+    const page = parseInt(
+      searchParams.get('page') || initialPage.toString(),
       10
     );
 
-    setSearchTerm(search);
-    setCurrentPage(pageNumber);
-  }, [router.query, setSearchTerm, initialSearchTerm, initialPage]);
+    setSearchTerm(query);
+    setCurrentPage(page);
+  }, [searchParams, setSearchTerm, initialSearchTerm, initialPage]);
 
   const updateQueryParams = useCallback(
     (search: string, page: number, name?: string) => {

@@ -1,1 +1,1 @@
-# React + TypeScript + Vite
+# Next.js
