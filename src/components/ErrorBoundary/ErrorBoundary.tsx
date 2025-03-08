@@ -1,3 +1,5 @@
+'use client';
+
 import React, { Component, ReactNode } from 'react';
 
 import styles from './ErrorBoundary.module.css';
@@ -7,8 +9,7 @@ interface State {
   errorMessage: string;
   errorInfo?: string | null;
 }
-
-class ErrorBoundary extends Component<{ children: ReactNode }, State> {
+export class ErrorBoundary extends Component<{ children: ReactNode }, State> {
   constructor(props: { children: ReactNode }) {
     super(props);
     this.state = {
@@ -60,5 +61,3 @@ class ErrorBoundary extends Component<{ children: ReactNode }, State> {
     return this.props.children;
   }
 }
-
-export default ErrorBoundary;

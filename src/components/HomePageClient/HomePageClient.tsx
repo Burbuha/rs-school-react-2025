@@ -1,46 +1,32 @@
-import { useQueryParams } from '../hooks/useQueryParams';
+'use client';
+
+import { Person } from '../../interfaces/person.interface';
+import { useQueryParams } from '../../hooks/useQueryParams';
 import { useDispatch, useSelector } from 'react-redux';
-import { GetServerSideProps } from 'next';
-import { RootState } from '../store/store';
-import { useTheme } from '../context/ThemeContext';
-import { Person } from '../interfaces/person.interface';
-import { unselectAll } from '../store/slices/selectedItemsSlice';
-import { ToggleButton } from '../components/ToggleButton/ToggleButton';
-import { Search } from '../components/Search/Search';
-import { Results } from '../components/Results/Results';
-import { Pagination } from '../components/Pagination/Pagination';
-import { DownloadButton } from '../components/DownloadButton/DownloadButton';
-import { getServerSideProps as getResultsServerSideProps } from '../utils/getResultsServerSideProps';
-import styles from '../styles/HomePage.module.css';
+import { RootState } from '../../store/store';
+import { useTheme } from '../../context/ThemeContext';
+import { unselectAll } from '../../store/slices/selectedItemsSlice';
+import { ToggleButton } from '../ToggleButton/ToggleButton';
+import { Search } from '../Search/Search';
+import { Results } from '../Results/Results';
+import { Pagination } from '../Pagination/Pagination';
+import { DownloadButton } from '../DownloadButton/DownloadButton';
+import styles from './HomePageClient.module.css';
 
 interface Props {
   initialSearchTerm: string;
   initialPage: number;
   peoples: Person[];
   error: string | null;
+  count: number;
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const resultsProps = (await getResultsServerSideProps(context)) as {
-    props: { peoples: Person[]; error: string | null; totalPages: number };
-  };
-  const initialSearchTerm = context.query.searchTerm || '';
-  const initialPage = parseInt(context.query.page as string, 10) || 1;
-
-  return {
-    props: {
-      initialSearchTerm,
-      initialPage,
-      ...resultsProps.props,
-    },
-  };
-};
-
-export const HomePage = ({
+const HomePageClient = ({
   initialSearchTerm,
   initialPage,
   peoples,
   error,
+  count,
 }: Props) => {
   const { searchTerm, currentPage, updateQueryParams } = useQueryParams(
     initialSearchTerm,
@@ -77,19 +63,22 @@ export const HomePage = ({
         </div>
 
         <div className={styles.topControls}>
-          <Search onSearch={handleSearch} />
+          <Search onSearchAction={handleSearch} />
         </div>
 
         <div className={styles.results}>
           <Results
             peoples={peoples}
             error={error}
-            onPersonClick={handlePersonClick}
+            onPersonClickAction={handlePersonClick}
           />
         </div>
 
         <div className={styles.footer}>
-          <Pagination onPageChange={handlePageChange} totalPages={10} />
+          <Pagination
+            onPageChangeAction={handlePageChange}
+            totalPages={Math.ceil(count / 10)}
+          />
 
           {selectedItems.length > 0 && (
             <div className={styles.flyout}>
@@ -104,4 +93,4 @@ export const HomePage = ({
   );
 };
 
-export default HomePage;
+export default HomePageClient;

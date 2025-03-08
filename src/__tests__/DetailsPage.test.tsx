@@ -1,26 +1,24 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { createMockRouter } from './utils/test-utils';
-import { vi } from 'vitest';
-import DetailsPage from '../pages/[name].tsx';
+import { Mock, vi } from 'vitest';
 import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime';
+import DetailsPageClient from '../components/DetailsPageClient/DetailsPageClient';
+import { useRouter } from 'next/navigation';
 
-vi.mock('../utils/getDetailsServerSideProps', () => ({
-  getDetailsServerSideProps: vi.fn().mockResolvedValue({
-    props: {
-      details: {
-        name: 'Luke Skywalker',
-        birth_year: '19BBY',
-        gender: 'male',
-        height: '172',
-        mass: '77',
-        eye_color: 'blue',
-        hair_color: 'blond',
-        skin_color: 'fair',
-      },
-      error: null,
-    },
-  }),
+vi.mock('next/navigation', () => ({
+  useRouter: vi.fn(),
 }));
+
+const mock = {
+  name: 'Luke Skywalker',
+  birth_year: '19BBY',
+  gender: 'male',
+  height: '172',
+  mass: '77',
+  eye_color: 'blue',
+  hair_color: 'blond',
+  skin_color: 'fair',
+};
 
 describe('DetailsPage', () => {
   it('renders the DetailsPage component with person details', async () => {
@@ -28,19 +26,7 @@ describe('DetailsPage', () => {
       <RouterContext.Provider
         value={createMockRouter({ query: { name: 'Luke Skywalker' } })}
       >
-        <DetailsPage
-          details={{
-            name: 'Luke Skywalker',
-            birth_year: '19BBY',
-            gender: 'male',
-            height: '172',
-            mass: '77',
-            eye_color: 'blue',
-            hair_color: 'blond',
-            skin_color: 'fair',
-          }}
-          error={null}
-        />
+        <DetailsPageClient details={mock} search={''} currentPage={1} />
       </RouterContext.Provider>
     );
 
@@ -54,17 +40,19 @@ describe('DetailsPage', () => {
     expect(screen.getByText('Skin color: fair')).toBeInTheDocument();
   });
 
-  it('renders error message when there is an error', () => {
+  it('navigates to the main page', () => {
+    const mockPush = vi.fn();
+    (useRouter as Mock).mockReturnValue({
+      push: mockPush,
+    });
+
     render(
-      <RouterContext.Provider
-        value={createMockRouter({ query: { name: 'Unknown' } })}
-      >
-        <DetailsPage details={null} error="Error fetching details" />
-      </RouterContext.Provider>
+      <DetailsPageClient details={mock} search="skywalker" currentPage={1} />
     );
 
-    expect(
-      screen.getByText('Error: Error fetching details')
-    ).toBeInTheDocument();
+    const closeButton = screen.getByTestId('close-button');
+    fireEvent.click(closeButton);
+
+    expect(mockPush).toHaveBeenCalledWith('/?query=skywalker&page=1');
   });
 });

@@ -1,3 +1,5 @@
+'use client';
+
 import styles from './ToggleButton.module.css';
 import { useTheme } from '../../context/ThemeContext.tsx';
 

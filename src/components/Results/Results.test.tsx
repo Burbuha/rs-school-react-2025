@@ -35,7 +35,7 @@ describe('Results Component', () => {
         <Results
           peoples={mockPeoples}
           error={null}
-          onPersonClick={mockOnPersonClick}
+          onPersonClickAction={mockOnPersonClick}
         />
       </Provider>
     );
@@ -52,7 +52,7 @@ describe('Results Component', () => {
         <Results
           peoples={[]}
           error={errorMessage}
-          onPersonClick={mockOnPersonClick}
+          onPersonClickAction={mockOnPersonClick}
         />
       </Provider>
     );
@@ -66,7 +66,7 @@ describe('Results Component', () => {
         <Results
           peoples={mockPeoples}
           error={null}
-          onPersonClick={mockOnPersonClick}
+          onPersonClickAction={mockOnPersonClick}
         />
       </Provider>
     );

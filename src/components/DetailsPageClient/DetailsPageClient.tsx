@@ -1,7 +1,7 @@
-import { GetServerSideProps } from 'next';
-import { useRouter } from 'next/router';
-import { getServerSideProps as getDetailsServerSideProps } from '../utils/getDetailsServerSideProps';
-import styles from '../styles/DetailsPage.module.css';
+'use client';
+
+import { useRouter } from 'next/navigation';
+import styles from './DetailsPageClient.module.css';
 
 interface Props {
   details: {
@@ -13,24 +13,13 @@ interface Props {
     eye_color: string;
     hair_color: string;
     skin_color: string;
-  } | null;
-  error: string | null;
+  };
+  search: string;
+  currentPage: number;
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  return getDetailsServerSideProps(context);
-};
-
-const DetailsPage = ({ details, error }: Props) => {
+const DetailsPageClient = ({ details, search, currentPage }: Props) => {
   const router = useRouter();
-  const { page, query } = router.query;
-
-  const search = query || '';
-  const currentPage = parseInt(typeof page === 'string' ? page : '1', 10);
-
-  if (!details) {
-    return <div>Error: {error}</div>;
-  }
 
   return (
     <div className={styles.container}>
@@ -39,11 +28,7 @@ const DetailsPage = ({ details, error }: Props) => {
         <button
           data-testid="close-button"
           className={styles.closeButton}
-          onClick={() =>
-            router.push(`/?query=${search}&page=${currentPage}`, undefined, {
-              shallow: true,
-            })
-          }
+          onClick={() => router.push(`/?query=${search}&page=${currentPage}`)}
         >
           X
         </button>
@@ -61,4 +46,4 @@ const DetailsPage = ({ details, error }: Props) => {
   );
 };
 
-export default DetailsPage;
+export default DetailsPageClient;

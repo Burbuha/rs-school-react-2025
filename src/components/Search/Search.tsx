@@ -1,13 +1,15 @@
+'use client';
+
 import { ChangeEvent, useState } from 'react';
 
 import styles from './Search.module.css';
 import { useQueryParams } from '../../hooks/useQueryParams.ts';
 
 interface Props {
-  onSearch: (term: string) => void;
+  onSearchAction: (term: string) => void;
 }
 
-export const Search = ({ onSearch }: Props) => {
+export const Search = ({ onSearchAction }: Props) => {
   const { searchTerm: initialSearchTerm } = useQueryParams();
   const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
 
@@ -16,7 +18,7 @@ export const Search = ({ onSearch }: Props) => {
   };
 
   const handleSearchClick = () => {
-    onSearch(searchTerm);
+    onSearchAction(searchTerm);
   };
 
   return (

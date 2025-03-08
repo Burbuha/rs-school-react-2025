@@ -1,7 +1,9 @@
+'use client';
+
 import styles from './Card.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { Person } from '../../interfaces/person.interface.ts';
-import { RootState } from '../../store/store.ts';
+import { Person } from '../../interfaces/person.interface';
+import { RootState } from '../../store/store';
 import {
   selectItem,
   unselectItem,
@@ -9,10 +11,10 @@ import {
 
 interface Props {
   person: Person;
-  onPersonClick: (person: Person) => void;
+  onPersonClickAction: (person: Person) => void;
 }
 
-export const Card = ({ person, onPersonClick }: Props) => {
+export const Card = ({ person, onPersonClickAction }: Props) => {
   const dispatch = useDispatch();
   const selectedItems = useSelector(
     (state: RootState) => state.selectedItems.items
@@ -47,7 +49,7 @@ export const Card = ({ person, onPersonClick }: Props) => {
       <span
         data-testid={person.name}
         className={styles.person}
-        onClick={() => onPersonClick(person)}
+        onClick={() => onPersonClickAction(person)}
       >
         {person.name}
       </span>

@@ -1,13 +1,15 @@
-import { Card } from '../Card/Card.tsx';
-import { Person } from '../../interfaces/person.interface.ts';
+'use client';
+
+import { Card } from '../Card/Card';
+import { Person } from '../../interfaces/person.interface';
 import styles from './CardList.module.css';
 
 interface Props {
   items: Person[];
-  onPersonClick: (person: Person) => void;
+  onPersonClickAction: (person: Person) => void;
 }
 
-export const CardList = ({ items, onPersonClick }: Props) => {
+export const CardList = ({ items, onPersonClickAction }: Props) => {
   if (!items?.length) {
     return <div className={styles.noData}>No data...</div>;
   }
@@ -15,7 +17,11 @@ export const CardList = ({ items, onPersonClick }: Props) => {
   return (
     <div>
       {items.map((item) => (
-        <Card key={item.name} person={item} onPersonClick={onPersonClick} />
+        <Card
+          key={item.name}
+          person={item}
+          onPersonClickAction={onPersonClickAction}
+        />
       ))}
     </div>
   );
