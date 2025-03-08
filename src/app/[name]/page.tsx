@@ -1,6 +1,5 @@
 import { fetchDetails } from '../../utils/fetchDetails';
 import DetailsPageClient from '../../components/DetailsPageClient/DetailsPageClient';
-import styles from '../../components/DetailsPageClient/DetailsPageClient.module.css';
 
 const DetailsPage = async ({
   params,
@@ -18,13 +17,11 @@ const DetailsPage = async ({
   }
 
   return (
-    <div className={styles.container}>
-      <DetailsPageClient
-        details={details}
-        search={query as string}
-        currentPage={Number(page)}
-      />
-    </div>
+    <DetailsPageClient
+      details={details}
+      search={query as string}
+      currentPage={Number(page)}
+    />
   );
 };
 
