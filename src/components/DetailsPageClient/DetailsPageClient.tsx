@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import styles from './DetailsPageClient.module.css';
 
 interface Props {
@@ -28,11 +28,7 @@ const DetailsPageClient = ({ details, search, currentPage }: Props) => {
         <button
           data-testid="close-button"
           className={styles.closeButton}
-          onClick={() =>
-            router.push(`/?query=${search}&page=${currentPage}`, undefined, {
-              shallow: true,
-            })
-          }
+          onClick={() => router.push(`/?query=${search}&page=${currentPage}`)}
         >
           X
         </button>

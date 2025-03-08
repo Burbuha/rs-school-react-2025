@@ -1,5 +1,6 @@
 'use client';
 
+import { ReactElement } from 'react';
 import { Person } from '../../interfaces/person.interface';
 import { useQueryParams } from '../../hooks/useQueryParams';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,6 +20,7 @@ interface Props {
   peoples: Person[];
   error: string | null;
   count: number;
+  children: ReactElement;
 }
 
 const HomePageClient = ({
@@ -27,6 +29,7 @@ const HomePageClient = ({
   peoples,
   error,
   count,
+  children,
 }: Props) => {
   const { searchTerm, currentPage, updateQueryParams } = useQueryParams(
     initialSearchTerm,
@@ -72,6 +75,7 @@ const HomePageClient = ({
             error={error}
             onPersonClickAction={handlePersonClick}
           />
+          {children}
         </div>
 
         <div className={styles.footer}>

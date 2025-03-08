@@ -2,11 +2,7 @@
   "compilerOptions": {
     "target": "ES2020",
     "useDefineForClassFields": true,
-    "lib": [
-      "ES2020",
-      "DOM",
-      "DOM.Iterable"
-    ],
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -28,9 +24,7 @@
         "name": "next"
       }
     ],
-    "types": [
-      "vitest/globals"
-    ]
+    "types": ["vitest/globals"]
   },
   "include": [
     "./dist/types/**/*.ts",
@@ -46,7 +40,5 @@
     "node_modules/vitest/globals.d.ts",
     ".next/types/**/*.ts"
   ],
-  "exclude": [
-    "./node_modules"
-  ]
+  "exclude": ["./node_modules"]
 }

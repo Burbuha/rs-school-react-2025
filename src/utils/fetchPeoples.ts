@@ -11,8 +11,6 @@ export const fetchPeoples = async (
     const response = await fetch(`https://swapi.dev/api/people${params}`);
     const data = await response.json();
 
-    console.log(data);
-
     return { peoples: data.results, error: data.error, count: data.count };
   } catch {
     return { peoples: [], error: 'Failed to fetch data', count: 0 };
