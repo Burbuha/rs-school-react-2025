@@ -1,19 +1,19 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import { validationSchema } from '../../configs/validation-schema';
 import { FormState } from '../../store/store';
 import { setHookFormData } from '../../store/hookFormSlice';
 import FormFields from '../../components/FormFields/FormFields';
 import { useAppDispatch } from '../../hooks/hooks/hooks';
-import { resetLastModified } from '../../store/uncontrolledFormSlice.ts';
+import { resetLastModified } from '../../store/uncontrolledFormSlice';
 
 const HookForm = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [imageBase64, setImageBase64] = useState<string | undefined>(undefined);
+  const [imageBase64, setImageBase64] = useState<string>();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -37,13 +37,15 @@ const HookForm = () => {
 
   const onSubmit = (data: FormState) => {
     dispatch(
-      setHookFormData({ ...data, image: imageBase64, lastModified: true })
+      setHookFormData({
+        ...data,
+        image: imageBase64 as string,
+        lastModified: true,
+      })
     );
     dispatch(resetLastModified());
     navigate('/');
   };
-
-  console.log(isValid, errors);
 
   return (
     <>
@@ -54,7 +56,7 @@ const HookForm = () => {
           errors={errors}
           handleImageChange={handleImageChange}
         />
-        <button type="submit" disabled={!isValid}>
+        <button type="submit" disabled={!isValid || !imageBase64}>
           Submit
         </button>
       </form>

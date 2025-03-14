@@ -33,7 +33,9 @@ const FormFields = ({ register, errors, handleImageChange }: Props) => {
           name="userName"
           {...(register ? register('userName') : [])}
         />
-        {errors.userName && <span>{errors.userName.message}</span>}
+        <span className={styles.error}>
+          {errors.userName && errors.userName.message}
+        </span>
       </div>
 
       <div className="row">
@@ -137,11 +139,15 @@ const FormFields = ({ register, errors, handleImageChange }: Props) => {
           id="image"
           name="image"
           accept="image/*"
+          {...(register ? register('image') : [])}
           onChange={handleFileChange}
         />
         {fileName && (
           <span className={styles.file}>Uploaded file: {fileName}</span>
         )}
+        <span className={styles.error}>
+          {errors.image && errors.image.message}
+        </span>
       </div>
     </>
   );

@@ -11,7 +11,7 @@ export interface FormState {
   country: string;
   password: string;
   confirmPassword: string;
-  image?: string;
+  image: string;
   terms?: boolean;
   lastModified?: boolean;
 }

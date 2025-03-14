@@ -19,4 +19,5 @@ export const validationSchema = Yup.object({
   terms: Yup.boolean().oneOf([true], 'You must accept Terms and Conditions'),
   country: Yup.string().required('Country is required'),
   gender: Yup.string().required('Gender is required'),
+  image: Yup.string().required('You must choose image'),
 });
