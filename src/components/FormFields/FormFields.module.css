@@ -1,0 +1,18 @@
+.fileDownload {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.fileInput {
+  border: none;
+  width: 120px;
+}
+
+.file {
+  color: #2c3e50;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

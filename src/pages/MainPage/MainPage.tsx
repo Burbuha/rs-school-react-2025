@@ -1,35 +1,28 @@
-import { useSelector } from 'react-redux';
-
-import { selectForm } from '../../store/formSlice';
+import { selectUncontrolledForm } from '../../store/uncontrolledFormSlice';
+import { FormCard } from '../../components/FormCard/FormCard';
+import { selectHookForm } from '../../store/hookFormSlice';
 import styles from './MainPage.module.css';
+import { useAppSelector } from '../../hooks/hooks/hooks.ts';
 
 const MainPage = () => {
-  const form = useSelector(selectForm);
+  const uncontrolledForm = useAppSelector(selectUncontrolledForm);
+  const hookForm = useAppSelector(selectHookForm);
 
   return (
-    <>
-      <h2>Form Data</h2>
-      <div className={styles['form-data']}>
-        <p>
-          <strong>Name:</strong> {form.name}
-        </p>
-        <p>
-          <strong>Age:</strong> {form.age}
-        </p>
-        <p>
-          <strong>Email:</strong> {form.email}
-        </p>
-        <p>
-          <strong>Gender:</strong> {form.gender}
-        </p>
-        <p>
-          <strong>Country:</strong> {form.country}
-        </p>
-        <p>
-          <strong>Terms Accepted:</strong> {form.terms ? 'Yes' : 'No'}
-        </p>
+    <div className={styles.mainPage}>
+      <div
+        className={`${styles.formContainer} ${uncontrolledForm.lastModified ? styles.active : ''}`}
+      >
+        <h2>Uncontrolled Form Data</h2>
+        <FormCard form={uncontrolledForm} />
       </div>
-    </>
+      <div
+        className={`${styles.formContainer} ${hookForm.lastModified ? styles.active : ''}`}
+      >
+        <h2>Hook Form Data</h2>
+        <FormCard form={hookForm} />
+      </div>
+    </div>
   );
 };
 

@@ -1,4 +1,5 @@
 import styles from './Sidebar.module.css';
+import { Link } from 'react-router-dom';
 
 export const Sidebar = () => {
   return (
@@ -7,13 +8,13 @@ export const Sidebar = () => {
       <nav>
         <ul>
           <li>
-            <a href="/">Main</a>
+            <Link to="/">Main</Link>
           </li>
           <li>
-            <a href="/uncontrolled-form">Uncontrolled Form</a>
+            <Link to="/uncontrolled-form">Uncontrolled Form</Link>
           </li>
           <li>
-            <a href="/hook-form">Hook Form</a>
+            <Link to="/hook-form">Hook Form</Link>
           </li>
         </ul>
       </nav>

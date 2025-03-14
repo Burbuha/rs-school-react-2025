@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import { countries } from '../configs/countries';
 
 export interface Country {
   code: string;
@@ -9,27 +10,15 @@ export interface CountriesState {
   countries: Country[];
 }
 
-const initialState: CountriesState = {
-  countries: [
-    { code: 'US', name: 'United States' },
-    { code: 'CA', name: 'Canada' },
-    { code: 'GB', name: 'United Kingdom' },
-  ],
-};
+const initialState: CountriesState = { countries };
 
 const countriesSlice = createSlice({
   name: 'countries',
   initialState,
-  reducers: {
-    setCountries: (state, action: PayloadAction<Country[]>) => {
-      state.countries = action.payload;
-    },
-  },
+  reducers: {},
 });
 
 export const getAllCountries = (state: { countries: CountriesState }) =>
   state.countries.countries;
-
-export const { setCountries } = countriesSlice.actions;
 
 export default countriesSlice.reducer;

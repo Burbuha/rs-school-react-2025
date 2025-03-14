@@ -1,99 +1,62 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
-import { FormState, setFormData } from '../../store/formSlice';
 import { validationSchema } from '../../configs/validation-schema';
-import { getAllCountries } from '../../store/countriesSlice';
-import styles from './HookForm.module.css';
+import { FormState } from '../../store/store';
+import { setHookFormData } from '../../store/hookFormSlice';
+import FormFields from '../../components/FormFields/FormFields';
+import { useAppDispatch } from '../../hooks/hooks/hooks';
+import { resetLastModified } from '../../store/uncontrolledFormSlice.ts';
 
 const HookForm = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const countries = useSelector(getAllCountries);
+  const [imageBase64, setImageBase64] = useState<string | undefined>(undefined);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImageBase64(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(validationSchema),
+    mode: 'onChange',
   });
 
   const onSubmit = (data: FormState) => {
-    dispatch(setFormData(data));
+    dispatch(
+      setHookFormData({ ...data, image: imageBase64, lastModified: true })
+    );
+    dispatch(resetLastModified());
     navigate('/');
   };
 
+  console.log(isValid, errors);
+
   return (
     <>
-      <h2 className={styles.formHeader}>Hook Form</h2>
-      <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-        <div>
-          <label htmlFor="name">Name</label>
-          <input type="text" {...register('name')} />
-          {errors.name && <span>{errors.name.message}</span>}
-        </div>
-
-        <div className="row">
-          <div>
-            <label htmlFor="age">Age</label>
-            <input type="number" {...register('age')} />
-            {errors.age && <span>{errors.age.message}</span>}
-          </div>
-          <div>
-            <label htmlFor="gender">Gender</label>
-            <select {...register('gender')}>
-              <option value="">Select gender</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
-            </select>
-            {errors.gender && <span>{errors.gender.message}</span>}
-          </div>
-        </div>
-        <div>
-          <label htmlFor="country">Country</label>
-          <select {...register('country')}>
-            <option value="">Select a country</option>
-            {countries.map((country) => (
-              <option key={country.code} value={country.name}>
-                {country.name}
-              </option>
-            ))}
-          </select>
-          {errors.country && <span>{errors.country.message}</span>}
-        </div>
-        <div>
-          <label htmlFor="email">Email</label>
-          <input type="email" {...register('email')} />
-          {errors.email && <span>{errors.email.message}</span>}
-        </div>
-
-        <div className={styles.passwordField}>
-          <label htmlFor="password">Password</label>
-          <input type="password" {...register('password')} />
-          {errors.password && <span>{errors.password.message}</span>}
-        </div>
-
-        <div className={styles.passwordField}>
-          <label htmlFor="confirmPassword">Confirm Password</label>
-          <input type="password" {...register('confirmPassword')} />
-          {errors.confirmPassword && (
-            <span>{errors.confirmPassword.message}</span>
-          )}
-        </div>
-
-        <div>
-          <label htmlFor="terms">
-            <input type="checkbox" {...register('terms')} />I accept the Terms
-            and Conditions
-          </label>
-          {errors.terms && <span>{errors.terms.message}</span>}
-        </div>
-
-        <button type="submit">Submit</button>
+      <h2>Hook Form</h2>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <FormFields
+          register={register}
+          errors={errors}
+          handleImageChange={handleImageChange}
+        />
+        <button type="submit" disabled={!isValid}>
+          Submit
+        </button>
       </form>
     </>
   );
