@@ -4,10 +4,9 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { validationSchema } from '../../configs/validation-schema';
-import { setUncontrolledFormData } from '../../store/uncontrolledFormSlice';
-import { FormState } from '../../store/store';
-import FormFields from '../../components/FormFields/FormFields.tsx';
-import { resetLastModified } from '../../store/hookFormSlice.ts';
+import { FormState, FormType } from '../../store/store';
+import FormFields from '../../components/FormFields/FormFields';
+import { setFormData } from '../../store/FormSlice';
 
 const UncontrolledForm: React.FC = () => {
   const dispatch = useDispatch();
@@ -48,8 +47,12 @@ const UncontrolledForm: React.FC = () => {
 
       await validationSchema.validate(formData, { abortEarly: false });
 
-      dispatch(setUncontrolledFormData({ ...formData, lastModified: true }));
-      dispatch(resetLastModified());
+      dispatch(
+        setFormData({
+          ...formData,
+          type: FormType.UncontrolledForm,
+        })
+      );
       navigate('/');
     } catch (err) {
       if (err instanceof Yup.ValidationError) {

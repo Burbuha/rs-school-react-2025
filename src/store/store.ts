@@ -1,7 +1,11 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import uncontrolledFormReducer from './uncontrolledFormSlice';
-import hookFormReducer from './hookFormSlice';
+import formReducer from './FormSlice';
 import countriesReducer from './countriesSlice';
+
+export enum FormType {
+  HookForm = 'hookForm',
+  UncontrolledForm = 'uncontrolledForm',
+}
 
 export interface FormState {
   userName: string;
@@ -13,12 +17,11 @@ export interface FormState {
   confirmPassword: string;
   image: string;
   terms?: boolean;
-  lastModified?: boolean;
+  type?: FormType;
 }
 
 const rootReducer = combineReducers({
-  uncontrolledForm: uncontrolledFormReducer,
-  hookForm: hookFormReducer,
+  forms: formReducer,
   countries: countriesReducer,
 });
 

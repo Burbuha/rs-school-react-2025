@@ -1,4 +1,4 @@
-import { FormState } from '../../store/store';
+import { FormState, FormType } from '../../store/store';
 import styles from './FormCard.module.css';
 
 interface Props {
@@ -7,7 +7,16 @@ interface Props {
 
 export const FormCard = ({ form }: Props) => {
   return (
-    <div className={styles.data}>
+    <div className={styles.card}>
+      {form.image && (
+        <div>
+          <img
+            src={form.image}
+            alt="Uploaded"
+            style={{ maxWidth: '100px', maxHeight: '100px' }}
+          />
+        </div>
+      )}
       <p>
         <strong>Name:</strong> {form.userName}
       </p>
@@ -26,16 +35,10 @@ export const FormCard = ({ form }: Props) => {
       <p>
         <strong>Terms Accepted:</strong> {form.terms ? 'Yes' : 'No'}
       </p>
-      {form.image && (
-        <div>
-          <strong>Image:</strong>
-          <img
-            src={form.image}
-            alt="Uploaded"
-            style={{ maxWidth: '100px', maxHeight: '100px' }}
-          />
-        </div>
-      )}
+      <div className={styles.info}>
+        Created with{' '}
+        {form.type === FormType.HookForm ? 'hook form' : 'uncontrolled form'}
+      </div>
     </div>
   );
 };

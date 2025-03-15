@@ -1,27 +1,28 @@
-import { selectUncontrolledForm } from '../../store/uncontrolledFormSlice';
 import { FormCard } from '../../components/FormCard/FormCard';
-import { selectHookForm } from '../../store/hookFormSlice';
+import { getAllForms } from '../../store/FormSlice';
+import { useAppSelector } from '../../hooks/hooks';
 import styles from './MainPage.module.css';
-import { useAppSelector } from '../../hooks/hooks/hooks.ts';
 
 const MainPage = () => {
-  const uncontrolledForm = useAppSelector(selectUncontrolledForm);
-  const hookForm = useAppSelector(selectHookForm);
+  const forms = useAppSelector(getAllForms);
+
+  if (!forms.length) {
+    return (
+      <div className={styles.noDataContainer}>
+        <p className={styles.noDataMessage}>No data...</p>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.mainPage}>
-      <div
-        className={`${styles.formContainer} ${uncontrolledForm.lastModified ? styles.active : ''}`}
-      >
-        <h2>Uncontrolled Form Data</h2>
-        <FormCard form={uncontrolledForm} />
-      </div>
-      <div
-        className={`${styles.formContainer} ${hookForm.lastModified ? styles.active : ''}`}
-      >
-        <h2>Hook Form Data</h2>
-        <FormCard form={hookForm} />
-      </div>
+      {forms.map((form, index, arr) => (
+        <div
+          className={`${styles.formContainer} ${index === arr.length - 1 ? styles.active : ''}`}
+        >
+          <FormCard form={form} />
+        </div>
+      ))}
     </div>
   );
 };

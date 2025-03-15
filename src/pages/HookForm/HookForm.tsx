@@ -4,11 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 
 import { validationSchema } from '../../configs/validation-schema';
-import { FormState } from '../../store/store';
-import { setHookFormData } from '../../store/hookFormSlice';
+import { FormState, FormType } from '../../store/store';
+import { setFormData } from '../../store/FormSlice';
 import FormFields from '../../components/FormFields/FormFields';
-import { useAppDispatch } from '../../hooks/hooks/hooks';
-import { resetLastModified } from '../../store/uncontrolledFormSlice';
+import { useAppDispatch } from '../../hooks/hooks';
 
 const HookForm = () => {
   const dispatch = useAppDispatch();
@@ -37,13 +36,12 @@ const HookForm = () => {
 
   const onSubmit = (data: FormState) => {
     dispatch(
-      setHookFormData({
+      setFormData({
         ...data,
         image: imageBase64 as string,
-        lastModified: true,
+        type: FormType.HookForm,
       })
     );
-    dispatch(resetLastModified());
     navigate('/');
   };
 
