@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 import { FormState } from '../../store/store';
 import { getAllCountries } from '../../store/countriesSlice';
 import { Autocomplete } from '../Autocomplete/Autocomplete';
-import { ControlAutocomplete } from '../Autocomplete/ControlAutocomplete';
 import styles from './FormFields.module.css';
 
 interface Props {
@@ -78,11 +77,7 @@ const FormFields = ({
       <div>
         <label htmlFor="country">Country</label>
         {control ? (
-          <ControlAutocomplete
-            options={countries}
-            name="country"
-            control={control}
-          />
+          <Autocomplete options={countries} name="country" control={control} />
         ) : (
           <Autocomplete options={countries} id="country" name="country" />
         )}
