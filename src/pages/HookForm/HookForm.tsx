@@ -29,6 +29,7 @@ const HookForm = () => {
     register,
     handleSubmit,
     formState: { errors, isValid },
+    control,
   } = useForm({
     resolver: yupResolver(validationSchema),
     mode: 'onChange',
@@ -53,6 +54,7 @@ const HookForm = () => {
           register={register}
           errors={errors}
           handleImageChange={handleImageChange}
+          control={control}
         />
         <button type="submit" disabled={!isValid || !imageBase64}>
           Submit

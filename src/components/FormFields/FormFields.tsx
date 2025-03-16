@@ -1,18 +1,26 @@
 import { ChangeEvent, useState } from 'react';
-import { FieldErrors, UseFormRegister } from 'react-hook-form';
+import { Control, FieldErrors, UseFormRegister } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 
 import { FormState } from '../../store/store';
 import { getAllCountries } from '../../store/countriesSlice';
+import { Autocomplete } from '../Autocomplete/Autocomplete';
+import { ControlAutocomplete } from '../Autocomplete/ControlAutocomplete';
 import styles from './FormFields.module.css';
 
 interface Props {
   register?: UseFormRegister<FormState>;
   errors: FieldErrors<FormState>;
   handleImageChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  control?: Control<FormState>;
 }
 
-const FormFields = ({ register, errors, handleImageChange }: Props) => {
+const FormFields = ({
+  register,
+  errors,
+  handleImageChange,
+  control,
+}: Props) => {
   const countries = useSelector(getAllCountries);
   const [fileName, setFileName] = useState<string>('');
 
@@ -69,18 +77,16 @@ const FormFields = ({ register, errors, handleImageChange }: Props) => {
 
       <div>
         <label htmlFor="country">Country</label>
-        <select
-          id="country"
-          name="country"
-          {...(register ? register('country') : [])}
-        >
-          <option value="">Select a country</option>
-          {countries.map((country) => (
-            <option key={country.code} value={country.name}>
-              {country.name}
-            </option>
-          ))}
-        </select>
+        {control ? (
+          <ControlAutocomplete
+            options={countries}
+            name="country"
+            control={control}
+          />
+        ) : (
+          <Autocomplete options={countries} id="country" name="country" />
+        )}
+
         {errors.country && <span>{errors.country.message}</span>}
       </div>
 

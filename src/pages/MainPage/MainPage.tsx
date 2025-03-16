@@ -18,6 +18,7 @@ const MainPage = () => {
     <div className={styles.mainPage}>
       {forms.map((form, index, arr) => (
         <div
+          key={`${form.userName}-${index}`}
           className={`${styles.formContainer} ${index === arr.length - 1 ? styles.active : ''}`}
         >
           <FormCard form={form} />
