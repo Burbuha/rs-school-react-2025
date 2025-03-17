@@ -1,0 +1,59 @@
+.fileDownload {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.fileInput {
+  border: none;
+  width: 120px;
+}
+
+.file {
+  color: #2c3e50;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.error {
+  height: 1.5em;
+}
+
+label {
+  display: block;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 5px;
+  color: #555;
+}
+
+input, select {
+  width: 100%;
+  padding: 5px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 5px;
+}
+
+input:focus, select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+input[type="file"] {
+  padding: 5px;
+  font-size: 1rem;
+}
+
+input[type="checkbox"] {
+  width: 20px;
+}
+
+span {
+  font-size: 0.875rem;
+  color: #d9534f;
+}
