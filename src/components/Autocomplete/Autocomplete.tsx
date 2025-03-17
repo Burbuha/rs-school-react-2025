@@ -1,21 +1,20 @@
 import { ChangeEvent, useState } from 'react';
-import { Control, useController } from 'react-hook-form';
+import { Control } from 'react-hook-form';
 import { Country } from '../../store/countriesSlice';
 import styles from './Autocomplete.module.css';
+import { FormState } from '../../store/store';
 
 interface Props {
   options: Country[];
-  id?: string;
   name: string;
-  control?: Control<any>;
+  id?: string;
+  control?: Control<FormState>;
+  onChange?: (value: string) => void;
 }
 
-export const Autocomplete = ({ options, id, name, control }: Props) => {
+export const Autocomplete = ({ options, id, name, onChange }: Props) => {
   const [query, setQuery] = useState('');
   const [filtered, setFiltered] = useState<Country[]>([]);
-  const { field } = control
-    ? useController({ name, control })
-    : { field: { onChange: () => {} } };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -27,19 +26,13 @@ export const Autocomplete = ({ options, id, name, control }: Props) => {
           )
         : []
     );
-
-    if (control) {
-      field.onChange(value);
-    }
+    onChange?.(value);
   };
 
   const handleSelect = (option: string) => {
     setQuery(option);
     setFiltered([]);
-
-    if (control) {
-      field.onChange(option);
-    }
+    onChange?.(option);
   };
 
   return (
