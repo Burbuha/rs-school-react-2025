@@ -1,54 +1,47 @@
-# React + TypeScript + Vite
+## Performance Analysis
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### Initial Profiling
 
-Currently, two official plugins are available:
+#### Commit Duration
+The commit duration represents the time taken for React to render the committed updates. In our application, the average commit duration was **X ms**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+#### Render Duration
+The render duration represents the time taken for individual components to render. The `CountryCard` component had the highest render duration of **Y ms**.
 
-## Expanding the ESLint configuration
+#### Interactions
+The following interactions were recorded during profiling:
+- Sorting the country list by name.
+- Filtering countries by region.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+#### Flame Graph
+The flame graph below shows the visual representation of component render times:
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-});
-```
+![Flame Graph]()
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+#### Ranked Chart
+The ranked chart below shows the sorted list of components by render duration:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x';
-import reactDom from 'eslint-plugin-react-dom';
+![Ranked Chart]()
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-});
-```
+### Optimized Profiling
+
+#### Commit Duration
+The commit duration after optimization was **A ms**.
+
+#### Render Duration
+The render duration for the `CountryCard` component after optimization was **B ms**.
+
+#### Interactions
+The following interactions were recorded during profiling after optimization:
+- Sorting the country list by name.
+- Filtering countries by region.
+
+#### Flame Graph
+The flame graph below shows the visual representation of component render times after optimization:
+
+![Flame Graph]()
+
+#### Ranked Chart
+The ranked chart below shows the sorted list of components by render duration after optimization:
+
+![Ranked Chart]()

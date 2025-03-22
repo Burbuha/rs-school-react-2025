@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
+import { CountryCard } from './components/Card/Card';
 import './App.css';
-import { CountryCard } from './components/Card/Card.tsx';
+import { Controls } from './components/Controls/Controls';
 
 const API_URL = 'https://restcountries.com/v3.1/all';
 
@@ -71,33 +72,15 @@ const App = () => {
 
   return (
     <div className="App">
-      <div className="controls">
-        <input
-          type="text"
-          placeholder="Search country..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-
-        <select onChange={(e) => setRegion(e.target.value)} value={region}>
-          <option value="">All Regions</option>
-          <option value="Africa">Africa</option>
-          <option value="Americas">Americas</option>
-          <option value="Asia">Asia</option>
-          <option value="Europe">Europe</option>
-          <option value="Oceania">Oceania</option>
-        </select>
-
-        <button onClick={() => handleSort('name')}>
-          Sort by Name
-          {sortType === 'name' && (sortOrder === 'asc' ? ' ⬆️' : ' ⬇️')}
-        </button>
-
-        <button onClick={() => handleSort('population')}>
-          Sort by Population
-          {sortType === 'population' && (sortOrder === 'asc' ? ' ⬆️' : ' ⬇️')}
-        </button>
-      </div>
+      <Controls
+        search={search}
+        setSearch={setSearch}
+        region={region}
+        setRegion={setRegion}
+        sortType={sortType}
+        sortOrder={sortOrder}
+        handleSort={handleSort}
+      />
 
       <div className="countries">
         {getFilteredCountries().map((country) => (
