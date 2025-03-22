@@ -1,5 +1,5 @@
-import { CountryCard } from '../Card/Card.tsx';
-import { Country } from '../../App.tsx';
+import CountryCard from '../Card/Card';
+import { Country } from '../../App';
 import styles from './Countries.module.css';
 
 interface Props {

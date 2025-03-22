@@ -1,4 +1,5 @@
-import { Country } from '../../App.tsx';
+import { memo } from 'react';
+import { Country } from '../../App';
 import styles from './Card.module.css';
 
 type CountryCardProps = {
@@ -7,11 +8,7 @@ type CountryCardProps = {
   toggleVisited: (countryName: string) => void;
 };
 
-export const CountryCard = ({
-  country,
-  visited,
-  toggleVisited,
-}: CountryCardProps) => {
+const CountryCard = ({ country, visited, toggleVisited }: CountryCardProps) => {
   return (
     <div
       className={`${styles.card} ${visited ? styles.visited : ''}`}
@@ -26,3 +23,5 @@ export const CountryCard = ({
     </div>
   );
 };
+
+export default memo(CountryCard);

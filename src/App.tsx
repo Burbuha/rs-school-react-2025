@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import './App.css';
 import { Controls } from './components/Controls/Controls';
-import { Countries } from './components/Countries/Countries.tsx';
+import { Countries } from './components/Countries/Countries';
 
 const API_URL = 'https://restcountries.com/v3.1/all';
 
@@ -36,24 +36,27 @@ const App = () => {
     localStorage.setItem('visitedCountries', JSON.stringify(visitedCountries));
   }, [visitedCountries]);
 
-  const toggleVisited = (countryName: string) => {
+  const toggleVisited = useCallback((countryName: string) => {
     setVisitedCountries((prev) =>
       prev.includes(countryName)
         ? prev.filter((c) => c !== countryName)
         : [...prev, countryName]
     );
-  };
+  }, []);
 
-  const handleSort = (type: 'name' | 'population') => {
-    if (sortType === type) {
-      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortType(type);
-      setSortOrder('asc');
-    }
-  };
+  const handleSort = useCallback(
+    (type: 'name' | 'population') => {
+      if (sortType === type) {
+        setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+      } else {
+        setSortType(type);
+        setSortOrder('asc');
+      }
+    },
+    [sortOrder, sortType]
+  );
 
-  const getFilteredCountries = () => {
+  const filteredCountries = useMemo(() => {
     return countries
       .filter((c) => (region ? c.region === region : true))
       .filter((c) => c.name.common.toLowerCase().includes(search.toLowerCase()))
@@ -68,7 +71,7 @@ const App = () => {
             : b.population - a.population;
         }
       });
-  };
+  }, [countries, region, search, sortOrder, sortType]);
 
   return (
     <div className="App">
@@ -83,7 +86,7 @@ const App = () => {
       />
 
       <Countries
-        countries={getFilteredCountries()}
+        countries={filteredCountries}
         visitedCountries={visitedCountries}
         toggleVisited={toggleVisited}
       />
