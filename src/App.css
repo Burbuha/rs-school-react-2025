@@ -8,10 +8,3 @@
 .App {
   min-height: 100vh;
 }
-
-.countries {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-  margin-top: 30px;
-}

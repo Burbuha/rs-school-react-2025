@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { CountryCard } from './components/Card/Card';
 import './App.css';
 import { Controls } from './components/Controls/Controls';
+import { Countries } from './components/Countries/Countries.tsx';
 
 const API_URL = 'https://restcountries.com/v3.1/all';
 
@@ -82,16 +82,11 @@ const App = () => {
         handleSort={handleSort}
       />
 
-      <div className="countries">
-        {getFilteredCountries().map((country) => (
-          <CountryCard
-            key={country.cca3}
-            country={country}
-            visited={visitedCountries.includes(country.name.common)}
-            toggleVisited={toggleVisited}
-          />
-        ))}
-      </div>
+      <Countries
+        countries={getFilteredCountries()}
+        visitedCountries={visitedCountries}
+        toggleVisited={toggleVisited}
+      />
     </div>
   );
 };
